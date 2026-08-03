@@ -1,0 +1,93 @@
+export const heroStats = [
+  {
+    id: 'speed',
+    value: '30s',
+    label: 'Analysis',
+    description: '快速生成模拟分析报告',
+  },
+  {
+    id: 'metrics',
+    value: '8',
+    label: 'Skin Metrics',
+    description: '多维度肌肤状态识别',
+  },
+  {
+    id: 'routine',
+    value: 'AI',
+    label: 'Routine',
+    description: '个性化护肤建议',
+  },
+];
+
+export const heroInsightCards = [
+  {
+    id: 'score',
+    label: 'Skin Score',
+    value: '86 / 100',
+    detail: 'Balanced sample report',
+    placement: 'left-[4%] top-[18%] w-40 -rotate-[7deg] sm:w-44',
+    visibility: '',
+    delay: '0s',
+    duration: '7s',
+  },
+  {
+    id: 'hydration',
+    label: 'Hydration',
+    value: '78%',
+    detail: 'Moisture signal',
+    placement: 'right-[2%] top-[12%] w-36 rotate-[5deg] sm:w-40',
+    visibility: '',
+    delay: '0.8s',
+    duration: '8.2s',
+  },
+  {
+    id: 'pores',
+    label: 'Pores',
+    value: 'Low Visibility',
+    detail: 'Nose and cheek zones',
+    placement: 'left-[0%] bottom-[22%] w-44 rotate-[4deg]',
+    visibility: 'hidden sm:block',
+    delay: '1.4s',
+    duration: '7.6s',
+  },
+  {
+    id: 'acne-risk',
+    label: 'Acne Risk',
+    value: '18%',
+    detail: 'Cosmetic care signal',
+    placement: 'right-[5%] bottom-[26%] w-36 -rotate-[5deg] sm:w-40',
+    visibility: 'hidden sm:block',
+    delay: '0.4s',
+    duration: '8.8s',
+  },
+  {
+    id: 'routine-match',
+    label: 'Routine Match',
+    value: '94%',
+    detail: 'Beauty routine fit',
+    placement: 'left-[22%] bottom-[4%] w-40 -rotate-[3deg]',
+    visibility: 'hidden lg:block',
+    delay: '1.1s',
+    duration: '9s',
+  },
+  {
+    id: 'ai-scanning',
+    label: 'AI Scanning',
+    value: 'Live',
+    detail: 'Texture mapping',
+    placement: 'right-[18%] top-[48%] w-44 rotate-[2deg]',
+    visibility: 'hidden md:block',
+    delay: '1.8s',
+    duration: '7.8s',
+  },
+];
+
+export const heroDetectionPoints = [
+  { id: 'forehead', label: 'Forehead', x: '50%', y: '23%' },
+  { id: 'under-eye-left', label: 'Under Eye', x: '38%', y: '43%' },
+  { id: 'under-eye-right', label: 'Under Eye', x: '61%', y: '43%' },
+  { id: 'nose', label: 'Pores', x: '51%', y: '51%' },
+  { id: 'cheek-left', label: 'Texture', x: '31%', y: '58%' },
+  { id: 'cheek-right', label: 'Texture', x: '70%', y: '58%' },
+  { id: 'chin', label: 'Chin', x: '51%', y: '76%' },
+];

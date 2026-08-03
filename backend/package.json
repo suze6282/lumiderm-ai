@@ -1,0 +1,37 @@
+{
+  "name": "lumiderm-ai-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Local backend prototype for the LumiDerm AI cosmetic-analysis demo.",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=20.17.0"
+  },
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "check": "node --check src/app.js && node --check src/server.js && node --check src/controllers/skinAnalysis.controller.js && node --check src/db/database.js && node --check src/middlewares/error.middleware.js && node --check src/middlewares/upload.middleware.js && node --check src/repositories/analysisRecord.repository.js && node --check src/routes/health.routes.js && node --check src/routes/skinAnalysis.routes.js && node --check src/services/mockAnalysis.service.js && node --check src/utils/AppError.js && node --check src/utils/asyncHandler.js && node --check src/utils/response.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "multer": "^2.2.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^6.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "src"
+    ],
+    "ext": "js,json",
+    "ignore": [
+      "uploads/*"
+    ]
+  }
+}

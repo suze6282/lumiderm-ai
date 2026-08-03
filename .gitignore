@@ -1,0 +1,36 @@
+# Dependencies and generated output
+**/node_modules/
+**/dist/
+**/coverage/
+*.log
+
+# Environment files: examples remain publishable
+**/.env
+**/.env.*
+!**/.env.example
+
+# Local databases and uploaded files
+backend/data/*
+!backend/data/.gitkeep
+backend/uploads/*
+!backend/uploads/.gitkeep
+*.sqlite
+*.sqlite3
+*.db
+
+# Deployment and editor metadata
+.vercel/
+.edgeone/
+.cloudbase/
+.tef_dist/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local QA and temporary artifacts
+tmp/
+qa-output/
+playwright-report/
+test-results/
+

@@ -1,0 +1,20 @@
+{
+  "name": "lumiderm-ai",
+  "version": "0.1.0",
+  "private": true,
+  "description": "LumiDerm AI cosmetic skin-analysis product prototype.",
+  "packageManager": "pnpm@11.9.0",
+  "engines": {
+    "node": ">=20.17.0"
+  },
+  "scripts": {
+    "install:all": "pnpm --dir frontend install --frozen-lockfile && pnpm --dir backend install --frozen-lockfile",
+    "dev:frontend": "pnpm --dir frontend dev",
+    "dev:backend": "pnpm --dir backend dev",
+    "build": "pnpm --dir frontend build",
+    "test": "pnpm --dir backend test",
+    "check:backend": "pnpm --dir backend check",
+    "audit:release": "node scripts/release-audit.mjs",
+    "check": "pnpm audit:release && pnpm check:backend && pnpm test && pnpm build"
+  }
+}
