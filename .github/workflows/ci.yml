@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.9.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: |
+            frontend/pnpm-lock.yaml
+            backend/pnpm-lock.yaml
+
+      - name: Install frontend dependencies
+        run: pnpm --dir frontend install --frozen-lockfile
+
+      - name: Install backend dependencies
+        run: pnpm --dir backend install --frozen-lockfile
+
+      - name: Audit frontend dependencies
+        run: pnpm --dir frontend audit --audit-level high
+
+      - name: Audit backend dependencies
+        run: pnpm --dir backend audit --audit-level high
+
+      - name: Verify release contents
+        run: pnpm audit:release
+
+      - name: Check backend syntax
+        run: pnpm check:backend
+
+      - name: Test backend
+        run: pnpm test
+
+      - name: Build frontend
+        run: pnpm build
