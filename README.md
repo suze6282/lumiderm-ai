@@ -48,7 +48,7 @@ lumiderm-ai/
 └─ .github/workflows/ci.yml
 ```
 
-## 本地运行
+## 本地运行（仅限于作者本人使用，其他浏览者此处可以忽略）
 
 需要 Node.js 20.17 或更高版本。仓库锁文件使用 pnpm 11.9；如已安装普通 Node.js，也可分别在前后端目录执行 `npm install` 和对应的 `npm run ...` 命令。
 
