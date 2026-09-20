@@ -1,0 +1,89 @@
+@keyframes heroFloat {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -8px, 0); }
+}
+
+@keyframes heroScan {
+  0%, 100% { transform: translateY(0); opacity: 0.35; }
+  50% { transform: translateY(250px); opacity: 0.86; }
+}
+
+@keyframes heroPointPulse {
+  0%, 100% { opacity: 0.66; transform: scale(0.94); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+@keyframes scanDemoLine {
+  0%, 100% { transform: translateY(0); opacity: 0.35; }
+  50% { transform: translateY(250px); opacity: 0.86; }
+}
+
+@keyframes scanPointPulse {
+  0%, 100% { opacity: 0.66; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+@keyframes scanProgressFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes scanScoreDraw { from { stroke-dashoffset: 295; } }
+@keyframes metricProgressFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+@keyframes faceZonePulse {
+  0%, 100% { opacity: 0.72; transform: scale(0.94); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+@keyframes faceLineFade { from { opacity: 0; } to { opacity: 1; } }
+
+@keyframes faceZoneDrift {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -6px, 0); }
+}
+
+@keyframes technologyLineFlow { to { stroke-dashoffset: -72; } }
+
+@keyframes technologyNodePulse {
+  0%, 100% { opacity: 0.68; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+@keyframes softPanelPulse {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(132, 212, 255, 0.06), 0 28px 90px rgba(109, 184, 255, 0.08); }
+  50% { box-shadow: 0 0 0 1px rgba(181, 156, 255, 0.1), 0 30px 96px rgba(155, 140, 255, 0.12); }
+}
+
+@keyframes softBackgroundDrift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes lumiSpinner { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .hero-float-card,
+  .hero-scan-line,
+  .hero-detection-point,
+  .scan-demo-line,
+  .scan-demo-point,
+  .scan-demo-live-dot,
+  .scan-demo-score-ring,
+  .scan-demo-progress,
+  .metric-progress-fill,
+  .face-map-zone-glow,
+  .face-map-connectors line,
+  .face-zone-dot,
+  .technology-network path,
+  .technology-node,
+  .pricing-card-highlight,
+  .final-cta-panel {
+    animation: none !important;
+  }
+}

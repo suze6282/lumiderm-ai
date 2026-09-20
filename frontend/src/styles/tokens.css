@@ -1,0 +1,74 @@
+:root {
+  color-scheme: dark;
+
+  --lumi-bg-primary: #05050a;
+  --lumi-bg-secondary: #070812;
+  --lumi-bg-tertiary: #0b0c16;
+  --lumi-surface: rgba(255, 255, 255, 0.035);
+  --lumi-surface-strong: rgba(255, 255, 255, 0.055);
+  --lumi-surface-elevated: rgba(15, 16, 30, 0.82);
+
+  --lumi-border: rgba(255, 255, 255, 0.08);
+  --lumi-border-hover: rgba(181, 156, 255, 0.22);
+  --lumi-border-active: rgba(132, 212, 255, 0.34);
+
+  --lumi-text-primary: #ffffff;
+  --lumi-text-secondary: #d8d9e6;
+  --lumi-text-muted: #8e91a6;
+
+  --lumi-accent-primary: #9b8cff;
+  --lumi-accent-primary-soft: #b59cff;
+  --lumi-accent-secondary: #6db8ff;
+  --lumi-accent-secondary-soft: #84d4ff;
+  --lumi-accent-rose: #cfa6c1;
+
+  --lumi-glow-primary: rgba(155, 140, 255, 0.2);
+  --lumi-glow-secondary: rgba(109, 184, 255, 0.16);
+
+  --lumi-radius-sm: 0.75rem;
+  --lumi-radius-md: 1rem;
+  --lumi-radius-lg: 1.375rem;
+  --lumi-radius-xl: 1.75rem;
+  --lumi-radius-pill: 999px;
+
+  --lumi-shadow-card: 0 20px 64px rgba(0, 0, 0, 0.28);
+  --lumi-shadow-card-hover: 0 24px 72px rgba(0, 0, 0, 0.34), 0 0 42px rgba(155, 140, 255, 0.1);
+  --lumi-shadow-floating: 0 28px 90px rgba(0, 0, 0, 0.4);
+
+  --lumi-space-section: clamp(4.75rem, 8vw, 7.5rem);
+  --lumi-space-container: clamp(1.25rem, 4vw, 2.5rem);
+
+  --lumi-motion-fast: 180ms;
+  --lumi-motion-normal: 360ms;
+  --lumi-motion-slow: 700ms;
+  --lumi-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --lumi-font-sans: "PingFang SC", "Microsoft YaHei", "Segoe UI", Aptos, system-ui, -apple-system, sans-serif;
+  --lumi-font-display: "Segoe UI Variable Display", "PingFang SC", "Microsoft YaHei", Aptos, system-ui, sans-serif;
+
+  /* Legacy aliases remain during the V2 migration. */
+  --color-black: var(--lumi-bg-primary);
+  --color-bg: var(--lumi-bg-secondary);
+  --color-midnight: var(--lumi-bg-tertiary);
+  --color-purple-black: #100d1d;
+  --color-graphite: #141521;
+  --color-line: var(--lumi-border);
+  --color-line-active: var(--lumi-border-hover);
+  --color-line-glow: rgba(181, 156, 255, 0.16);
+  --color-text: var(--lumi-text-primary);
+  --color-secondary: rgba(216, 217, 230, 0.78);
+  --color-muted: rgba(142, 145, 166, 0.72);
+  --color-blue: var(--lumi-accent-secondary);
+  --color-cyan: var(--lumi-accent-secondary-soft);
+  --color-violet: var(--lumi-accent-primary);
+  --color-magenta: var(--lumi-accent-primary-soft);
+  --color-rose: var(--lumi-accent-rose);
+  --section-y: var(--lumi-space-section);
+  --container-padding: var(--lumi-space-container);
+}
+
+@media (max-width: 640px) {
+  :root {
+    --lumi-space-section: clamp(4rem, 14vw, 5.25rem);
+  }
+}
