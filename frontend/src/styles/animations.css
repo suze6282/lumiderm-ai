@@ -31,18 +31,6 @@
 @keyframes skinScoreDraw { from { stroke-dashoffset: 295; } }
 @keyframes metricProgressFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
-@keyframes faceZonePulse {
-  0%, 100% { opacity: 0.72; transform: scale(0.94); }
-  50% { opacity: 1; transform: scale(1.05); }
-}
-
-@keyframes faceLineFade { from { opacity: 0; } to { opacity: 1; } }
-
-@keyframes faceZoneDrift {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(0, -6px, 0); }
-}
-
 @keyframes technologyLineFlow { to { stroke-dashoffset: -72; } }
 
 @keyframes technologyNodePulse {
@@ -81,9 +69,6 @@
   .skin-score-ring-value,
   .skin-result-meter > span,
   .metric-progress-fill,
-  .face-map-zone-glow,
-  .face-map-connectors line,
-  .face-zone-dot,
   .technology-network path,
   .technology-node,
   .pricing-card-highlight,

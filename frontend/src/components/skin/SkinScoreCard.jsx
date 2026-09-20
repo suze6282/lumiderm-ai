@@ -2,12 +2,7 @@ import { useEffect, useRef } from 'react';
 import { animate, motion, useInView, useMotionValue, useReducedMotion, useTransform } from 'framer-motion';
 import { Check, Sparkles } from 'lucide-react';
 import { motionDuration, motionEase } from '../../lib/motion.js';
-
-export function normalizeMetricValue(value) {
-  const parsed = Number(value);
-  if (!Number.isFinite(parsed)) return 0;
-  return Math.min(100, Math.max(0, parsed));
-}
+import { normalizeMetricValue } from '../../lib/metrics.js';
 
 function AnimatedScore({ value }) {
   const target = normalizeMetricValue(value);

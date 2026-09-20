@@ -1,9 +1,9 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { CircleDot, Droplets, Eye, Gauge, Palette, ScanSearch, Sparkles, Waves } from 'lucide-react';
 import { metricStatusMap } from '../../data/skinMetrics.js';
+import { normalizeMetricValue } from '../../lib/metrics.js';
 import { motionDuration, motionEase } from '../../lib/motion.js';
 import { cn } from '../../lib/utils.js';
-import { normalizeMetricValue } from './SkinScoreCard.jsx';
 
 const iconMap = {
   CircleDot,
