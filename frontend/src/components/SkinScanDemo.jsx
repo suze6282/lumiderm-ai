@@ -205,6 +205,7 @@ function RoutineSuggestion({ routineSuggestion }) {
 function AnalysisPanel({ analysis }) {
   const score = getScoreData(analysis);
   const metrics = analysis?.metrics?.length ? analysis.metrics : scanMetrics;
+  const summaryMetrics = metrics.slice(0, 4);
   const disclaimer = analysis?.zhDisclaimer || 'LumiDerm AI 提供的是美容护肤方向的模拟肌肤分析，不构成医疗诊断或治疗建议。';
 
   return (
@@ -220,14 +221,14 @@ function AnalysisPanel({ analysis }) {
       <ScoreRing score={score} />
 
       <div className="skin-result-metrics">
-        {metrics.map((metric) => <MetricProgress key={metric.id} metric={metric} />)}
+        {summaryMetrics.map((metric) => <MetricProgress key={metric.id} metric={metric} />)}
       </div>
 
       <InsightCard insight={analysis?.insight} />
       <RoutineSuggestion routineSuggestion={analysis?.routineSuggestion} />
 
-      <GradientButton href="#personalization" size="lg" className="mt-6 w-full sm:w-auto">
-        查看个性化护理方案
+      <GradientButton href="#skin-metrics" size="lg" className="mt-6 w-full sm:w-auto">
+        查看完整肌肤智能分析
       </GradientButton>
 
       <p className="skin-result-disclaimer"><Info size={15} aria-hidden="true" />{disclaimer}</p>
