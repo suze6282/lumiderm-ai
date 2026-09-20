@@ -1,16 +1,16 @@
-@keyframes heroFloat {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(0, -8px, 0); }
+@keyframes heroHudFloat {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -4px; }
 }
 
-@keyframes heroScan {
-  0%, 100% { transform: translateY(0); opacity: 0.35; }
-  50% { transform: translateY(250px); opacity: 0.86; }
+@keyframes heroFaceScan {
+  0%, 100% { transform: translateY(0); opacity: 0.2; }
+  50% { transform: translateY(260px); opacity: 0.72; }
 }
 
-@keyframes heroPointPulse {
-  0%, 100% { opacity: 0.66; transform: scale(0.94); }
-  50% { opacity: 1; transform: scale(1.05); }
+@keyframes heroNodeBreathe {
+  0%, 100% { opacity: 0.62; transform: scale(0.96); }
+  50% { opacity: 0.94; transform: scale(1.04); }
 }
 
 @keyframes scanDemoLine {
@@ -68,8 +68,8 @@
     animation-iteration-count: 1 !important;
   }
 
-  .hero-float-card,
-  .hero-scan-line,
+  .hero-hud-card,
+  .hero-face-scan,
   .hero-detection-point,
   .scan-demo-line,
   .scan-demo-point,
