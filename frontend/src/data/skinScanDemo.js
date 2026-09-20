@@ -1,78 +1,104 @@
-export const scanStatusTags = ['Live Scan', 'Facial Mapping', 'Texture Detection', 'Cosmetic Analysis'];
+export const skinScanFileConfig = Object.freeze({
+  accept: 'image/jpeg,image/png,image/webp',
+  allowedMimeTypes: new Set(['image/jpeg', 'image/png', 'image/webp']),
+  allowedExtensions: new Set(['jpg', 'jpeg', 'png', 'webp']),
+  maxSizeBytes: 5 * 1024 * 1024,
+  formatLabel: 'JPG / PNG / WEBP',
+  sizeLabel: '单张图片最大 5MB',
+});
+
+export const scanFlowSteps = [
+  { id: 'prepare', number: '01', label: '准备照片' },
+  { id: 'confirm', number: '02', label: '确认图片' },
+  { id: 'analyze', number: '03', label: 'AI 分析' },
+  { id: 'report', number: '04', label: '生成报告' },
+];
+
+export const scanProgressStages = [
+  { id: 'quality', label: '图像质量检测' },
+  { id: 'face', label: '面部区域识别' },
+  { id: 'texture', label: '肌肤纹理分析' },
+  { id: 'hydration', label: '水润状态分析' },
+  { id: 'pores', label: '毛孔状态分析' },
+  { id: 'routine', label: '个性化建议生成' },
+];
 
 export const scanDetectionPoints = [
-  { id: 'forehead', label: 'Forehead', x: '50%', y: '20%' },
-  { id: 'left-eye', label: 'Eye Area', x: '37%', y: '39%' },
-  { id: 'right-eye', label: 'Eye Area', x: '63%', y: '39%' },
-  { id: 'nose', label: 'Nose Wing', x: '51%', y: '51%' },
-  { id: 'left-cheek', label: 'Left Cheek', x: '31%', y: '58%' },
-  { id: 'right-cheek', label: 'Right Cheek', x: '70%', y: '58%' },
-  { id: 'mouth', label: 'Mouth Corner', x: '42%', y: '70%' },
-  { id: 'chin', label: 'Chin', x: '51%', y: '80%' },
+  { id: 'forehead', label: '额头检测点', x: '50%', y: '20%' },
+  { id: 'left-eye', label: '左眼周检测点', x: '37%', y: '39%' },
+  { id: 'right-eye', label: '右眼周检测点', x: '63%', y: '39%' },
+  { id: 'nose', label: '鼻翼检测点', x: '51%', y: '51%' },
+  { id: 'left-cheek', label: '左脸颊检测点', x: '31%', y: '58%' },
+  { id: 'right-cheek', label: '右脸颊检测点', x: '70%', y: '58%' },
+  { id: 'mouth', label: '嘴角检测点', x: '42%', y: '70%' },
+  { id: 'chin', label: '下巴检测点', x: '51%', y: '80%' },
 ];
 
 export const skinScore = {
-  label: 'Overall Skin Score',
+  label: '综合肌肤评分',
   value: 86,
-  status: 'Balanced',
-  condition: 'Good Condition',
+  status: '整体均衡',
+  condition: '状态良好',
   description: '当前模拟结果显示肌肤状态整体较稳定，建议重点关注水分维持与局部纹理管理。',
 };
 
 export const scanMetrics = [
   {
     id: 'hydration',
-    label: 'Hydration Level',
-    zhLabel: '水分水平',
+    label: '水分状态',
     value: 78,
-    status: 'Good',
-    description: 'Moisture support appears stable in this sample profile.',
+    status: '良好',
+    description: '水分观感较稳定，日常护理可继续关注补水支持。',
   },
   {
-    id: 'pore-visibility',
-    label: 'Pore Visibility',
-    zhLabel: '毛孔可见度',
+    id: 'pores',
+    label: '毛孔可见度',
     value: 24,
-    status: 'Low',
-    description: 'Visible pore texture remains low in the preview zones.',
+    status: '较低',
+    description: '可见面部区域的毛孔对比度较低。',
   },
   {
-    id: 'acne-risk',
-    label: 'Acne Risk',
-    zhLabel: '痘痘风险',
+    id: 'acne',
+    label: '可见瑕疵倾向',
     value: 18,
-    status: 'Low',
-    description: 'Sample blemish-prone signal is low for cosmetic care planning.',
+    status: '较低',
+    description: '模拟观察中可见瑕疵倾向较低。',
   },
   {
-    id: 'dark-circle',
-    label: 'Dark Circle Index',
-    zhLabel: '黑眼圈指数',
+    id: 'dark-circles',
+    label: '眼周阴影指数',
     value: 32,
-    status: 'Mild',
-    description: 'Under-eye shadow signal is mild in this simulated report.',
-  },
-  {
-    id: 'skin-tone',
-    label: 'Skin Tone Balance',
-    zhLabel: '肤色均匀度',
-    value: 91,
-    status: 'Excellent',
-    description: 'Tone balance appears strong across the visible face zones.',
-  },
-  {
-    id: 'aging-index',
-    label: 'Aging Index',
-    zhLabel: '抗老指数',
-    value: 22,
-    status: 'Low',
-    description: 'Visible line signal is low in this sample analysis.',
+    status: '轻度',
+    description: '眼周阴影观感处于轻度水平。',
   },
 ];
 
 export const aiInsight = {
-  title: 'AI Insight',
-  content:
-    'Your skin profile shows strong tone balance and low acne risk. Focus on hydration support and gentle texture refinement for a smoother beauty routine.',
-  zhContent: '模拟结果显示肤色均匀度较好，痘痘风险较低，建议重点关注补水维持与温和纹理管理。',
+  title: 'AI 肌肤洞察',
+  content: '模拟结果显示肤色均匀度较好，可见瑕疵倾向较低，建议重点关注补水支持、温和纹理管理与日常防护。',
 };
+
+export const metricStatusTranslations = Object.freeze({
+  Good: '良好',
+  Low: '较低',
+  Moderate: '中等',
+  Mild: '轻度',
+  Balanced: '均衡',
+  Excellent: '优秀',
+  Ready: '已完成',
+});
+
+export const routinePriorityTranslations = Object.freeze({
+  'Hydration Support': '补水支持',
+  'Texture Refinement': '温和纹理管理',
+  'Barrier Care': '屏障护理',
+  'Daily Protection': '日常防护',
+});
+
+export const ingredientTranslations = Object.freeze({
+  'Hyaluronic Acid': '透明质酸',
+  Niacinamide: '烟酰胺',
+  Ceramides: '神经酰胺',
+  Panthenol: '泛醇',
+  'Green Tea Extract': '绿茶提取物',
+});

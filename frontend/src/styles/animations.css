@@ -13,18 +13,22 @@
   50% { opacity: 0.94; transform: scale(1.04); }
 }
 
-@keyframes scanDemoLine {
-  0%, 100% { transform: translateY(0); opacity: 0.35; }
-  50% { transform: translateY(250px); opacity: 0.86; }
+@keyframes skinScanLine {
+  0%, 100% { transform: translateY(0); opacity: 0.2; }
+  50% { transform: translateY(330px); opacity: 0.72; }
 }
 
-@keyframes scanPointPulse {
-  0%, 100% { opacity: 0.66; transform: scale(0.95); }
-  50% { opacity: 1; transform: scale(1.05); }
+@keyframes skinScanPoint {
+  0%, 100% { opacity: 0.62; transform: scale(0.96); }
+  50% { opacity: 0.92; transform: scale(1.04); }
 }
 
-@keyframes scanProgressFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-@keyframes scanScoreDraw { from { stroke-dashoffset: 295; } }
+@keyframes skinProgressPulse {
+  0%, 100% { opacity: 0.62; transform: scale(0.92); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes skinScoreDraw { from { stroke-dashoffset: 295; } }
 @keyframes metricProgressFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
 @keyframes faceZonePulse {
@@ -71,11 +75,11 @@
   .hero-hud-card,
   .hero-face-scan,
   .hero-detection-point,
-  .scan-demo-line,
-  .scan-demo-point,
-  .scan-demo-live-dot,
-  .scan-demo-score-ring,
-  .scan-demo-progress,
+  .skin-scan-line,
+  .skin-scan-point,
+  .skin-progress-stage-icon,
+  .skin-score-ring-value,
+  .skin-result-meter > span,
   .metric-progress-fill,
   .face-map-zone-glow,
   .face-map-connectors line,
