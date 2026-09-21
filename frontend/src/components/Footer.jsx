@@ -1,60 +1,56 @@
 import Container from './common/Container.jsx';
 import { cn } from '../lib/utils.js';
 
-const footerLinks = [
-  { label: 'Home', href: '#home' },
-  { label: 'Analysis', href: '#analysis' },
-  { label: 'Technology', href: '#technology' },
-  { label: 'Personalization', href: '#personalization' },
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'Contact', href: '#contact' },
+const footerGroups = [
+  {
+    title: '产品',
+    links: [
+      { label: '肌肤分析', href: '#analysis' },
+      { label: '面部分区', href: '#face-mapping' },
+      { label: '个性化护理', href: '#personalization' },
+      { label: '核心技术', href: '#technology' },
+    ],
+  },
+  {
+    title: '信息',
+    links: [
+      { label: '应用场景', href: '#use-cases' },
+      { label: '体验方案', href: '#pricing' },
+      { label: '常见问题', href: '#faq' },
+      { label: '返回顶部', href: '#home' },
+    ],
+  },
 ];
 
-const socialLinks = ['Instagram', 'LinkedIn', 'X'];
+function FooterLinkGroup({ group }) {
+  return (
+    <div className="footer-link-group">
+      <h2>{group.title}</h2>
+      <nav aria-label={`${group.title}导航`}>
+        {group.links.map((link) => <a key={link.href} href={link.href}>{link.label}</a>)}
+      </nav>
+    </div>
+  );
+}
 
 export default function Footer({ className = '' }) {
   return (
-    <footer data-module="footer" className={cn('border-t border-white/10 py-12', className)}>
+    <footer data-module="footer" className={cn('footer-v2', className)}>
       <Container>
-        <div className="grid gap-8 lg:grid-cols-[1.15fr_1fr_0.7fr]">
-          <div>
-            <a href="#home" className="font-display text-2xl font-semibold tracking-display text-lumi-text">
-              LumiDerm AI
-            </a>
-            <p className="mt-4 max-w-md text-sm leading-6 text-lumi-secondary">
-              AI-powered cosmetic skin analysis and personalized beauty intelligence.
-            </p>
-            <p className="mt-3 max-w-md text-sm leading-6 text-lumi-muted">
-              AI 肌肤分析与个性化美容智能体验概念。
-            </p>
+        <div className="footer-main-v2">
+          <div className="footer-brand-v2">
+            <a href="#home" aria-label="LumiDerm AI 首页">LumiDerm <span>AI</span></a>
+            <p>用 AI 帮助用户更直观地理解肌肤状态与美容护理方向。</p>
           </div>
 
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-lumi-cyan/80">Navigation</p>
-            <nav className="mt-4 grid grid-cols-2 gap-3 text-sm text-lumi-secondary" aria-label="Footer navigation">
-              {footerLinks.map((link) => (
-                <a key={link.href} className="transition hover:text-lumi-text" href={link.href}>
-                  {link.label}
-                </a>
-              ))}
-            </nav>
-          </div>
-
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-lumi-cyan/80">Social</p>
-            <div className="mt-4 flex flex-wrap gap-3 text-sm text-lumi-secondary lg:flex-col">
-              {socialLinks.map((item) => (
-                <a key={item} className="transition hover:text-lumi-text" href="#contact">
-                  {item}
-                </a>
-              ))}
-            </div>
+          <div className="footer-navigation-v2">
+            {footerGroups.map((group) => <FooterLinkGroup key={group.title} group={group} />)}
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 text-sm text-lumi-muted md:flex-row md:items-center md:justify-between">
-          <p>© 2026 LumiDerm AI. All rights reserved.</p>
-          <p>Cosmetic analysis demo only. Not for medical diagnosis.</p>
+        <div className="footer-bottom-v2">
+          <p>© 2026 LumiDerm AI</p>
+          <p>本项目提供美容护肤方向的模拟分析体验，不构成医疗诊断或治疗建议。</p>
         </div>
       </Container>
     </footer>

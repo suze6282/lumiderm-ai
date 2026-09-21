@@ -31,16 +31,6 @@
 @keyframes skinScoreDraw { from { stroke-dashoffset: 295; } }
 @keyframes metricProgressFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
-@keyframes softPanelPulse {
-  0%, 100% { box-shadow: 0 0 0 1px rgba(132, 212, 255, 0.06), 0 28px 90px rgba(109, 184, 255, 0.08); }
-  50% { box-shadow: 0 0 0 1px rgba(181, 156, 255, 0.1), 0 30px 96px rgba(155, 140, 255, 0.12); }
-}
-
-@keyframes softBackgroundDrift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
 @keyframes lumiSpinner { to { transform: rotate(360deg); } }
 
 @media (prefers-reduced-motion: reduce) {
@@ -61,9 +51,7 @@
   .skin-progress-stage-icon,
   .skin-score-ring-value,
   .skin-result-meter > span,
-  .metric-progress-fill,
-  .pricing-card-highlight,
-  .final-cta-panel {
+  .metric-progress-fill {
     animation: none !important;
   }
 }

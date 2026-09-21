@@ -4,6 +4,7 @@
 @import "./styles/face-mapping.css";
 @import "./styles/routine.css";
 @import "./styles/technology-use-cases.css";
+@import "./styles/conversion.css";
 @import "./styles/animations.css";
 
 @tailwind base;
@@ -1924,46 +1925,6 @@
     }
   }
 
-  .pricing-card {
-    background:
-      radial-gradient(circle at 18% 0%, rgba(var(--pricing-accent), 0.12), transparent 14rem),
-      radial-gradient(circle at 92% 92%, rgba(76, 201, 240, 0.04), transparent 12rem),
-      rgba(255, 255, 255, 0.043);
-  }
-
-  .pricing-card:hover {
-    border-color: rgba(var(--pricing-accent), 0.36);
-  }
-
-  .pricing-card-highlight {
-    border-color: rgba(95, 255, 224, 0.34);
-    box-shadow:
-      0 0 0 1px rgba(95, 255, 224, 0.08),
-      0 28px 90px rgba(76, 201, 240, 0.12);
-    animation: softPanelPulse 7s ease-in-out infinite;
-  }
-
-  .pricing-badge {
-    box-shadow: 0 0 22px rgba(95, 255, 224, 0.12);
-  }
-
-  .faq-item.is-open button {
-    color: var(--color-text);
-  }
-
-  .final-cta-panel {
-    background:
-      radial-gradient(circle at 18% 18%, rgba(95, 255, 224, 0.11), transparent 22rem),
-      radial-gradient(circle at 78% 74%, rgba(255, 79, 216, 0.12), transparent 24rem),
-      radial-gradient(circle at 62% 22%, rgba(155, 92, 255, 0.1), transparent 20rem),
-      rgba(255, 255, 255, 0.048);
-    background-size: 125% 125%;
-    animation: softBackgroundDrift 16s ease-in-out infinite;
-  }
-
-  .final-cta-panel::before {
-    opacity: 0.95;
-  }
 }
 
 @media (max-width: 640px) {

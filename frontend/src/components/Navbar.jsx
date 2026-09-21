@@ -11,7 +11,6 @@ const navItems = [
   { label: '肌肤分析', href: '#analysis' },
   { label: '个性化护理', href: '#personalization' },
   { label: '方案价格', href: '#pricing' },
-  { label: '联系我们', href: '#contact' },
 ];
 
 function NavLink({ item, active, onClick, mobile = false }) {
@@ -122,7 +121,6 @@ export default function Navbar({ className = '' }) {
         </nav>
 
         <div className="hidden shrink-0 items-center gap-2 xl:flex">
-          <button className="navbar-login" type="button">登录</button>
           <GradientButton href="#analysis" size="sm" icon={ArrowRight}>开始检测</GradientButton>
         </div>
 
@@ -177,8 +175,7 @@ export default function Navbar({ className = '' }) {
                 ))}
               </nav>
 
-              <div className="grid gap-2 border-t border-white/[0.07] px-1 pb-1 pt-3 sm:grid-cols-[auto_1fr]">
-                <button className="navbar-login min-h-11 justify-center px-5" type="button">登录</button>
+              <div className="grid gap-2 border-t border-white/[0.07] px-1 pb-1 pt-3">
                 <GradientButton href="#analysis" size="md" icon={ArrowRight} className="w-full" onClick={closeMenu}>
                   开始检测
                 </GradientButton>
