@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from 'framer-motion';
+import { m as motion, useReducedMotion } from 'framer-motion';
 import { CircleDot, Droplets, Eye, Gauge, Palette, ScanSearch, Sparkles, Waves } from 'lucide-react';
 import { metricStatusMap } from '../../data/skinMetrics.js';
 import { normalizeMetricValue } from '../../lib/metrics.js';

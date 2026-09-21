@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, m as motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Info, Sparkles } from 'lucide-react';
 import GradientButton from '../common/GradientButton.jsx';
 import { isMetricValueAvailable, normalizeMetricValue } from '../../lib/metrics.js';

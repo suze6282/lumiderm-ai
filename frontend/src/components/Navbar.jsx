@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, m as motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Menu, X } from 'lucide-react';
 import Container from './common/Container.jsx';
 import GradientButton from './common/GradientButton.jsx';
@@ -30,10 +30,16 @@ export default function Navbar({ className = '' }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('');
+  const isScrolledRef = useRef(false);
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
-    const updateScrolledState = () => setIsScrolled(window.scrollY > 32);
+    const updateScrolledState = () => {
+      const nextScrolled = window.scrollY > 32;
+      if (nextScrolled === isScrolledRef.current) return;
+      isScrolledRef.current = nextScrolled;
+      setIsScrolled(nextScrolled);
+    };
 
     updateScrolledState();
     window.addEventListener('scroll', updateScrolledState, { passive: true });

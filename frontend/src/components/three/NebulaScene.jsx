@@ -1,6 +1,6 @@
 import { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import { AdditiveBlending, Color, DoubleSide, MathUtils } from 'three';
 
 const vertexShader = `
   uniform float uTime;
@@ -73,9 +73,9 @@ function createParticleField(count, seed) {
   const random = seededRandom(seed);
   const positions = new Float32Array(count * 3);
   const colors = new Float32Array(count * 3);
-  const violet = new THREE.Color('#9b8cff');
-  const blue = new THREE.Color('#84d4ff');
-  const pale = new THREE.Color('#d9e8ff');
+  const violet = new Color('#9b8cff');
+  const blue = new Color('#84d4ff');
+  const pale = new Color('#d9e8ff');
 
   for (let index = 0; index < count; index += 1) {
     const angle = random() * Math.PI * 5.5;
@@ -108,8 +108,8 @@ function NebulaCloud({ colorA, colorB, phase, position, rotation, scale, paused,
   const uniforms = useMemo(() => ({
     uTime: { value: 0 },
     uPhase: { value: phase },
-    uColorA: { value: new THREE.Color(colorA) },
-    uColorB: { value: new THREE.Color(colorB) },
+    uColorA: { value: new Color(colorA) },
+    uColorB: { value: new Color(colorB) },
   }), [colorA, colorB, phase]);
 
   return (
@@ -122,8 +122,8 @@ function NebulaCloud({ colorA, colorB, phase, position, rotation, scale, paused,
         fragmentShader={fragmentShader}
         transparent
         depthWrite={false}
-        blending={THREE.AdditiveBlending}
-        side={THREE.DoubleSide}
+        blending={AdditiveBlending}
+        side={DoubleSide}
       />
     </mesh>
   );
@@ -139,8 +139,8 @@ function NebulaParticles({ count, paused, interactive }) {
     groupRef.current.rotation.z += step * 0.006;
     groupRef.current.rotation.y += step * 0.003;
     if (interactive) {
-      groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, state.pointer.x * 0.16, 0.018);
-      groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, state.pointer.y * 0.08, 0.018);
+      groupRef.current.position.x = MathUtils.lerp(groupRef.current.position.x, state.pointer.x * 0.16, 0.018);
+      groupRef.current.position.y = MathUtils.lerp(groupRef.current.position.y, state.pointer.y * 0.08, 0.018);
     }
   });
 
@@ -158,7 +158,7 @@ function NebulaParticles({ count, paused, interactive }) {
           opacity={0.64}
           vertexColors
           depthWrite={false}
-          blending={THREE.AdditiveBlending}
+          blending={AdditiveBlending}
         />
       </points>
     </group>
@@ -172,8 +172,8 @@ export default function NebulaScene({ mobile = false, paused = false }) {
     if (paused || mobile || !sceneRef.current) return;
     const targetX = state.pointer.x * 0.08;
     const targetY = state.pointer.y * 0.045;
-    sceneRef.current.rotation.y = THREE.MathUtils.lerp(sceneRef.current.rotation.y, targetX, 0.012);
-    sceneRef.current.rotation.x = THREE.MathUtils.lerp(sceneRef.current.rotation.x, -targetY, 0.012);
+    sceneRef.current.rotation.y = MathUtils.lerp(sceneRef.current.rotation.y, targetX, 0.012);
+    sceneRef.current.rotation.x = MathUtils.lerp(sceneRef.current.rotation.x, -targetY, 0.012);
   });
 
   return (
@@ -188,17 +188,19 @@ export default function NebulaScene({ mobile = false, paused = false }) {
         paused={paused}
         mobile={mobile}
       />
-      <NebulaCloud
-        colorA="#44347e"
-        colorB="#86c9e8"
-        phase={2.1}
-        position={[1.9, -0.55, -2.4]}
-        rotation={[-0.04, 0.12, 0.2]}
-        scale={[0.84, 0.7, 1]}
-        paused={paused}
-        mobile={mobile}
-      />
-      <NebulaParticles count={mobile ? 420 : 1650} paused={paused} interactive={!mobile} />
+      {!mobile ? (
+        <NebulaCloud
+          colorA="#44347e"
+          colorB="#86c9e8"
+          phase={2.1}
+          position={[1.9, -0.55, -2.4]}
+          rotation={[-0.04, 0.12, 0.2]}
+          scale={[0.84, 0.7, 1]}
+          paused={paused}
+          mobile={mobile}
+        />
+      ) : null}
+      <NebulaParticles count={mobile ? 320 : 1650} paused={paused} interactive={!mobile} />
     </group>
   );
 }

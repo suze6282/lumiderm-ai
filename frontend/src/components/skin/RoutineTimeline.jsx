@@ -1,5 +1,5 @@
 import { useId, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, m as motion, useReducedMotion } from 'framer-motion';
 import { ChevronDown, Moon, SunMedium } from 'lucide-react';
 import GlowCard from '../common/GlowCard.jsx';
 import { motionDuration, motionEase } from '../../lib/motion.js';

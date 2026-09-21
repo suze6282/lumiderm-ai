@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from 'framer-motion';
+import { m as motion, useReducedMotion } from 'framer-motion';
 import { Check } from 'lucide-react';
 import { motionDuration, motionEase } from '../../lib/motion.js';
 

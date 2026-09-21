@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { m as motion } from 'framer-motion';
 import { ListChecks, ScanFace, SlidersHorizontal, Sparkles } from 'lucide-react';
 import Container from './common/Container.jsx';
 import MotionSection from './common/MotionSection.jsx';

@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from 'framer-motion';
+import { m as motion, useReducedMotion } from 'framer-motion';
 import { fadeUp, viewportOnce } from '../../lib/motion.js';
 import { cn } from '../../lib/utils.js';
 

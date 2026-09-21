@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { m as motion } from 'framer-motion';
 import { ArrowRight, Info } from 'lucide-react';
 import Container from './common/Container.jsx';
 import GradientButton from './common/GradientButton.jsx';

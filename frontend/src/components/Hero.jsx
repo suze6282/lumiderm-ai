@@ -1,5 +1,5 @@
 import { Component, lazy, Suspense } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { m as motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, ScanFace } from 'lucide-react';
 import Container from './common/Container.jsx';
 import GradientButton from './common/GradientButton.jsx';

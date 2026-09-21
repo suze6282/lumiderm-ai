@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, m as motion, useReducedMotion } from 'framer-motion';
 import { AlertCircle, Check, Gauge, Info, RefreshCw, ShieldCheck, Sparkles } from 'lucide-react';
 import Container from './common/Container.jsx';
 import GlowCard from './common/GlowCard.jsx';

@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { m as motion } from 'framer-motion';
 import { Radar, ScanFace, Sparkles } from 'lucide-react';
 import Container from './common/Container.jsx';
 import GlowCard from './common/GlowCard.jsx';

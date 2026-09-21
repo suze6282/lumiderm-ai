@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { animate, motion, useInView, useMotionValue, useReducedMotion, useTransform } from 'framer-motion';
+import { animate, m as motion, useInView, useMotionValue, useReducedMotion, useTransform } from 'framer-motion';
 import { Check, Sparkles } from 'lucide-react';
 import { motionDuration, motionEase } from '../../lib/motion.js';
 import { normalizeMetricValue } from '../../lib/metrics.js';
