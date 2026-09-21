@@ -31,13 +31,6 @@
 @keyframes skinScoreDraw { from { stroke-dashoffset: 295; } }
 @keyframes metricProgressFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
-@keyframes technologyLineFlow { to { stroke-dashoffset: -72; } }
-
-@keyframes technologyNodePulse {
-  0%, 100% { opacity: 0.68; transform: scale(0.95); }
-  50% { opacity: 1; transform: scale(1.05); }
-}
-
 @keyframes softPanelPulse {
   0%, 100% { box-shadow: 0 0 0 1px rgba(132, 212, 255, 0.06), 0 28px 90px rgba(109, 184, 255, 0.08); }
   50% { box-shadow: 0 0 0 1px rgba(181, 156, 255, 0.1), 0 30px 96px rgba(155, 140, 255, 0.12); }
@@ -69,8 +62,6 @@
   .skin-score-ring-value,
   .skin-result-meter > span,
   .metric-progress-fill,
-  .technology-network path,
-  .technology-node,
   .pricing-card-highlight,
   .final-cta-panel {
     animation: none !important;
