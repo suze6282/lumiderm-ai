@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import Navbar from './components/Navbar.jsx';
 import Hero from './components/Hero.jsx';
 import ProductIntro from './components/ProductIntro.jsx';
@@ -13,6 +14,20 @@ import FinalCTA from './components/FinalCTA.jsx';
 import Footer from './components/Footer.jsx';
 
 export default function App() {
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (!hash) return undefined;
+
+    const target = document.getElementById(hash);
+    if (!target) return undefined;
+
+    const frame = window.requestAnimationFrame(() => {
+      target.scrollIntoView({ block: 'start' });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
   return (
     <div className="app-shell bg-lumi-black text-lumi-text">
       <Navbar />

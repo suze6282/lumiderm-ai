@@ -279,6 +279,7 @@ export default function SkinScanDemo({ className = '' }) {
   const previewUrlRef = useRef('');
   const progressTimersRef = useRef([]);
   const requestIdRef = useRef(0);
+  const analyzingRef = useRef(false);
 
   const clearProgressTimers = () => {
     progressTimersRef.current.forEach((timer) => window.clearTimeout(timer));
@@ -307,6 +308,7 @@ export default function SkinScanDemo({ className = '' }) {
     }
 
     requestIdRef.current += 1;
+    analyzingRef.current = false;
     clearProgressTimers();
     replacePreview(file);
     setSelectedFile(file);
@@ -325,7 +327,7 @@ export default function SkinScanDemo({ className = '' }) {
   };
 
   const handleAnalyze = async () => {
-    if (scanState === 'loading') return;
+    if (scanState === 'loading' || analyzingRef.current) return;
 
     if (!selectedFile) {
       setErrorMessage(getFriendlyErrorMessage({ code: 'IMAGE_REQUIRED' }));
@@ -334,6 +336,7 @@ export default function SkinScanDemo({ className = '' }) {
 
     const requestId = requestIdRef.current + 1;
     requestIdRef.current = requestId;
+    analyzingRef.current = true;
     setScanState('loading');
     setResult(null);
     setErrorMessage('');
@@ -351,11 +354,14 @@ export default function SkinScanDemo({ className = '' }) {
       clearProgressTimers();
       setErrorMessage(getFriendlyErrorMessage(error));
       setScanState('error');
+    } finally {
+      if (requestIdRef.current === requestId) analyzingRef.current = false;
     }
   };
 
   const handleRestart = () => {
     requestIdRef.current += 1;
+    analyzingRef.current = false;
     clearProgressTimers();
     setResult(null);
     setProgress(0);
@@ -365,6 +371,7 @@ export default function SkinScanDemo({ className = '' }) {
 
   const handleReset = () => {
     requestIdRef.current += 1;
+    analyzingRef.current = false;
     clearProgressTimers();
     if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
     previewUrlRef.current = '';
