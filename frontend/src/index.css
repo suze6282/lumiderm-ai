@@ -2,6 +2,7 @@
 @import "./styles/globals.css";
 @import "./styles/effects.css";
 @import "./styles/face-mapping.css";
+@import "./styles/routine.css";
 @import "./styles/animations.css";
 
 @tailwind base;
@@ -1922,72 +1923,6 @@
     }
   }
 
-  .routine-summary-panel {
-    background:
-      radial-gradient(circle at 18% 8%, rgba(76, 201, 240, 0.1), transparent 15rem),
-      radial-gradient(circle at 82% 78%, rgba(255, 79, 216, 0.07), transparent 16rem),
-      rgba(255, 255, 255, 0.045);
-  }
-
-  .routine-card {
-    background:
-      radial-gradient(circle at 18% 0%, rgba(var(--routine-accent), 0.13), transparent 13rem),
-      radial-gradient(circle at 88% 95%, rgba(76, 201, 240, 0.055), transparent 12rem),
-      rgba(255, 255, 255, 0.043);
-  }
-
-  .routine-card:hover {
-    border-color: rgba(var(--routine-accent), 0.36);
-  }
-
-  .routine-flow-step {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 1rem;
-    background: rgba(255, 255, 255, 0.03);
-    padding: 0.75rem;
-  }
-
-  .routine-flow-step::after {
-    content: "";
-    position: absolute;
-    left: 1.24rem;
-    top: calc(100% + 0.15rem);
-    width: 1px;
-    height: 0.55rem;
-    background: linear-gradient(180deg, rgba(95, 255, 224, 0.52), transparent);
-  }
-
-  .routine-flow-step:last-child::after {
-    display: none;
-  }
-
-  .routine-flow-index {
-    display: inline-flex;
-    width: 2rem;
-    height: 2rem;
-    flex: 0 0 auto;
-    align-items: center;
-    justify-content: center;
-    border-radius: 999px;
-    border: 1px solid rgba(95, 255, 224, 0.22);
-    background: rgba(95, 255, 224, 0.09);
-    color: var(--color-cyan);
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-  }
-
-  .routine-cta {
-    background:
-      radial-gradient(circle at 14% 24%, rgba(95, 255, 224, 0.08), transparent 18rem),
-      radial-gradient(circle at 86% 70%, rgba(155, 92, 255, 0.08), transparent 18rem),
-      rgba(255, 255, 255, 0.045);
-  }
-
   .technology-visual-panel {
     background:
       radial-gradient(circle at 18% 12%, rgba(76, 201, 240, 0.1), transparent 18rem),
@@ -2268,15 +2203,5 @@
 @media (min-width: 1024px) {
   .hero-layout {
     grid-template-columns: minmax(0, 0.84fr) minmax(0, 1.16fr);
-  }
-}
-
-@media (min-width: 640px) and (max-width: 1023px) {
-  .routine-flow-step::after {
-    left: calc(100% + 0.15rem);
-    top: 50%;
-    width: 0.55rem;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(95, 255, 224, 0.52), transparent);
   }
 }
