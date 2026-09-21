@@ -16,7 +16,7 @@ const iconMap = {
 
 export default function ProductIntro({ className = '' }) {
   return (
-    <MotionSection id="product" data-module="product-intro" className={cn('section-spacing', className)}>
+    <MotionSection id="product" data-module="product-intro" className={cn('product-intro-section section-spacing', className)}>
       <Container>
         <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <SectionTitle

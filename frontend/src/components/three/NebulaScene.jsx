@@ -96,7 +96,7 @@ function createParticleField(count, seed) {
   return { positions, colors };
 }
 
-function NebulaCloud({ colorA, colorB, phase, position, rotation, scale, paused }) {
+function NebulaCloud({ colorA, colorB, phase, position, rotation, scale, paused, mobile }) {
   const materialRef = useRef(null);
 
   useFrame((_, delta) => {
@@ -114,7 +114,7 @@ function NebulaCloud({ colorA, colorB, phase, position, rotation, scale, paused 
 
   return (
     <mesh position={position} rotation={rotation} scale={scale}>
-      <planeGeometry args={[8, 6, 48, 36]} />
+      <planeGeometry args={mobile ? [8, 6, 28, 22] : [8, 6, 48, 36]} />
       <shaderMaterial
         ref={materialRef}
         uniforms={uniforms}
@@ -129,7 +129,7 @@ function NebulaCloud({ colorA, colorB, phase, position, rotation, scale, paused 
   );
 }
 
-function NebulaParticles({ count, paused }) {
+function NebulaParticles({ count, paused, interactive }) {
   const groupRef = useRef(null);
   const field = useMemo(() => createParticleField(count, 6282), [count]);
 
@@ -138,8 +138,10 @@ function NebulaParticles({ count, paused }) {
     const step = Math.min(delta, 0.05);
     groupRef.current.rotation.z += step * 0.006;
     groupRef.current.rotation.y += step * 0.003;
-    groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, state.pointer.x * 0.16, 0.018);
-    groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, state.pointer.y * 0.08, 0.018);
+    if (interactive) {
+      groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, state.pointer.x * 0.16, 0.018);
+      groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, state.pointer.y * 0.08, 0.018);
+    }
   });
 
   return (
@@ -167,7 +169,7 @@ export default function NebulaScene({ mobile = false, paused = false }) {
   const sceneRef = useRef(null);
 
   useFrame((state) => {
-    if (paused || !sceneRef.current) return;
+    if (paused || mobile || !sceneRef.current) return;
     const targetX = state.pointer.x * 0.08;
     const targetY = state.pointer.y * 0.045;
     sceneRef.current.rotation.y = THREE.MathUtils.lerp(sceneRef.current.rotation.y, targetX, 0.012);
@@ -184,6 +186,7 @@ export default function NebulaScene({ mobile = false, paused = false }) {
         rotation={[0.04, -0.08, -0.12]}
         scale={[1.15, 0.92, 1]}
         paused={paused}
+        mobile={mobile}
       />
       <NebulaCloud
         colorA="#44347e"
@@ -193,8 +196,9 @@ export default function NebulaScene({ mobile = false, paused = false }) {
         rotation={[-0.04, 0.12, 0.2]}
         scale={[0.84, 0.7, 1]}
         paused={paused}
+        mobile={mobile}
       />
-      <NebulaParticles count={mobile ? 720 : 1650} paused={paused} />
+      <NebulaParticles count={mobile ? 420 : 1650} paused={paused} interactive={!mobile} />
     </group>
   );
 }

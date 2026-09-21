@@ -60,7 +60,12 @@ export default function SkinUploadZone({ errorMessage = '', disabled = false, on
           </span>
           <span className="skin-upload-title">{isDragging ? '松开即可上传' : '上传面部照片'}</span>
           <span className="skin-upload-copy">
-            {isDragging ? '我们会先检查图片格式和大小' : '拖拽照片到这里，或点击选择照片'}
+            {isDragging ? '我们会先检查图片格式和大小' : (
+              <>
+                <span className="skin-upload-copy-desktop">拖拽照片到这里，或点击选择照片</span>
+                <span className="skin-upload-copy-mobile">点击选择一张清晰的正面照片</span>
+              </>
+            )}
           </span>
           <span id="skin-upload-formats" className="skin-upload-formats">
             支持 {skinScanFileConfig.formatLabel}，{skinScanFileConfig.sizeLabel}

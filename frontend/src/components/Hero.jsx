@@ -61,7 +61,7 @@ function HeroContent({ reduceMotion }) {
 
 function HeroStats() {
   return (
-    <dl className="hero-stats hidden sm:grid">
+    <dl className="hero-stats grid">
       {heroStats.map((stat) => (
         <div key={stat.id} className="hero-stat">
           <dt className="sr-only">{stat.label}</dt>
@@ -110,7 +110,7 @@ function HudGraphic({ type }) {
 
 function FloatingHudCard({ card }) {
   return (
-    <div className={cn('hero-hud-card', card.placement, card.visibility)}>
+    <div className={cn('hero-hud-card', card.placement, card.visibility)} data-insight={card.id}>
       <div>
         <p className="hero-hud-label">{card.label}</p>
         <p className="hero-hud-value">{card.value}</p>
