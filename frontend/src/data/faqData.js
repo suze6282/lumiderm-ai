@@ -12,12 +12,12 @@ export const faqData = [
   {
     id: 'supported-formats',
     question: '支持哪些图片格式和大小？',
-    answer: '当前支持 JPG、PNG 和 WEBP 格式，单张图片最大 5MB。文件类型和扩展名都需要符合要求。',
+    answer: '当前支持 JPG、PNG 和 WEBP 格式，单张图片最大 5 MB。文件类型和扩展名都需要符合要求。',
   },
   {
     id: 'medical-boundary',
     question: '分析结果是否属于医疗诊断？',
-    answer: '不是。LumiDerm AI 当前提供的是美容护肤方向的模拟肌肤分析和护理建议，不用于疾病诊断，也不能替代医生或专业医疗建议。',
+    answer: '不是。LumiDerm AI 当前提供的是美容护肤方向的模拟肌肤分析与护理建议，不用于疾病诊断，也不能替代医生或专业医疗建议。',
   },
   {
     id: 'result-variation',
@@ -27,7 +27,7 @@ export const faqData = [
   {
     id: 'routine-generation',
     question: '个性化护理建议是如何生成的？',
-    answer: '当前原型根据模拟指标、整体评分与局部关注区域，整理早间、晚间和每周护理方向。它不会推荐具体品牌商品，也不构成治疗方案。',
+    answer: '当前原型根据模拟指标、整体评分与局部关注区域，整理早间、晚间和每周护理方向。它不会推荐具体品牌商品，也不构成医疗诊断或治疗建议。',
   },
   {
     id: 'photo-handling',

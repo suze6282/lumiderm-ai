@@ -18,7 +18,7 @@ export const useCases = [
   {
     id: 'observe-local-zones',
     title: '观察局部区域表现',
-    question: 'T 区、眼周和脸颊的肤感并不相同，应该怎样分别理解？',
+    question: '额头、鼻部、眼周和脸颊的肤感并不相同，应该怎样分别理解？',
     value: '通过面部分区查看不同位置的状态说明与美容护理建议。',
     iconName: 'ScanFace',
   },

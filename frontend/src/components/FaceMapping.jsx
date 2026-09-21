@@ -49,7 +49,7 @@ export default function FaceMapping({ className = '', zones = faceZones }) {
     <MotionSection id="face-mapping" data-module="face-mapping" className={cn('face-mapping-section section-spacing', className)}>
       <Container>
         <SectionTitle
-          eyebrow="AI 面部分区"
+          eyebrow="AI 面部分区分析"
           title="看见每个面部区域的肌肤状态"
           subtitle="选择不同面部区域，查看 LumiDerm AI 对局部肌肤状态的模拟分析与护理建议。"
           className="face-mapping-title"

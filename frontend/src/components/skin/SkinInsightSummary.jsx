@@ -36,7 +36,7 @@ export default function SkinInsightSummary({ focusMetrics, strengthMetrics, care
           <p>AI 护理方向</p>
           <h3 id="care-direction-title">温和、稳定、持续</h3>
           <MetricNames metrics={directions} />
-          <small>护理建议不替代专业医疗意见，请根据实际肤感合理调整。</small>
+          <small>护理方向仅用于美容护肤参考，请根据实际肤感合理调整。</small>
         </section>
       </div>
 

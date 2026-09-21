@@ -20,11 +20,12 @@ export default function ProductIntro({ className = '' }) {
       <Container>
         <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <SectionTitle
-            title="Your Skin, Reimagined By AI"
-            subtitle="LumiDerm AI 通过图像智能分析肌肤状态，生成可视化评分报告和个性化护肤建议。"
+            eyebrow="产品流程"
+            title="从肌肤检测，到个性化护理"
+            subtitle="LumiDerm AI 将照片输入、模拟分析与护理建议整理成清晰易懂的三步体验。"
           />
           <p className="body-copy text-lg">
-            The platform turns visible skin signals into a guided cosmetic analysis flow: scan the face, read the report, then translate insights into a practical beauty routine.
+            从一张清晰的正面照片开始，了解整体肌肤状态与局部护理重点，再查看适合日常执行的个性化护理方案。
           </p>
         </div>
 
@@ -38,7 +39,7 @@ export default function ProductIntro({ className = '' }) {
                     <Icon size={20} aria-hidden="true" />
                   </div>
                   <h3 className="mt-7 text-2xl font-semibold">{step.title}</h3>
-                  <p className="mt-1 text-sm text-lumi-secondary">{step.zhTitle}</p>
+                  <p className="mt-1 text-sm text-lumi-secondary">{step.summary}</p>
                   <p className="mt-4 text-sm leading-6 text-lumi-secondary">{step.description}</p>
                 </GlowCard>
               </motion.div>

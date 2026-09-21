@@ -24,7 +24,7 @@ function UseCaseCard({ item }) {
       </div>
       {item.question ? <p className="use-case-question">“{item.question}”</p> : null}
       <div className="use-case-value">
-        <span>LumiDerm AI 提供</span>
+        <span>你将看到</span>
         <p>{item.value || '将肌肤信息整理成更容易理解的美容护理参考。'}</p>
       </div>
       {Array.isArray(item.signals) && item.signals.length ? (

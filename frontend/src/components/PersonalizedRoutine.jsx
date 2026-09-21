@@ -64,7 +64,7 @@ export default function PersonalizedRoutine({
     <MotionSection id="personalization" data-module="personalized-routine" className={cn('personalized-routine-section section-spacing', className)}>
       <Container>
         <SectionTitle
-          eyebrow="AI 个性化护理"
+          eyebrow="AI 个性化护理方案"
           title="为你的肌肤生成专属护理方案"
           subtitle="根据当前肌肤状态与重点关注区域，LumiDerm AI 为你整理更清晰的早晚护理路径。"
           className="personalized-routine-title"

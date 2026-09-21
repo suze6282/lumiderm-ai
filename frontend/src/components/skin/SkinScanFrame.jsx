@@ -65,7 +65,7 @@ export default function SkinScanFrame({
           />
         )) : null}
         <div className="skin-scan-frame-status" aria-live="polite">
-          {isLoading ? 'AI 正在分析' : isSuccess ? '分析已完成' : '照片已就绪'}
+          {isLoading ? 'AI 正在分析' : isSuccess ? '分析完成' : '照片已就绪'}
         </div>
       </div>
 

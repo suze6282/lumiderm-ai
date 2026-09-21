@@ -52,7 +52,7 @@ function PricingCard({ plan }) {
           href={plan.ctaHref || '#analysis'}
           variant={plan.highlighted ? 'primary' : 'secondary'}
         >
-          {plan.cta || '开始体验'}
+          {plan.cta || '开始肌肤检测'}
         </GradientButton>
       </div>
     </GlowCard>
@@ -68,7 +68,7 @@ export default function Pricing({ className = '', plans = pricingPlans }) {
         <SectionTitle
           align="center"
           eyebrow="体验方案"
-          title="选择适合你的 LumiDerm 体验方式"
+          title="选择适合你的 LumiDerm AI 体验方式"
           subtitle="从基础肌肤分析到更完整的个性化护理流程，以下方案用于产品原型体验展示，不代表已上线的商业订阅。"
           className="pricing-title-v2"
         />

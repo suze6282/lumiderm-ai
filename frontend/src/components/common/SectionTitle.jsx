@@ -13,7 +13,7 @@ export default function SectionTitle({
   return (
     <div className={cn(isCenter ? 'mx-auto max-w-3xl text-center' : 'max-w-3xl', className)}>
       {eyebrow ? (
-        <p className="section-title-eyebrow mb-4 text-[0.68rem] font-semibold uppercase text-lumi-cyan/85">
+        <p className="section-title-eyebrow mb-4 text-[0.68rem] font-semibold text-lumi-cyan/85">
           {eyebrow}
         </p>
       ) : null}

@@ -97,7 +97,7 @@ export const skinMetrics = [
     status: 'Balanced',
     direction: 'higher-better',
     iconName: 'Gauge',
-    description: '反映 T 区与脸颊区域的表面水油状态。',
+    description: '反映额头、鼻部与脸颊区域的表面水油状态。',
     insight: '整体观感较均衡，建议保持分区护理，避免过度控油。',
   },
   {
@@ -113,4 +113,4 @@ export const skinMetrics = [
   },
 ];
 
-export const dashboardDisclaimer = 'LumiDerm AI 提供的是美容护肤方向的模拟肌肤分析，不构成医疗诊断或治疗建议。';
+export const dashboardDisclaimer = '分析结果仅用于美容护肤方向参考。';

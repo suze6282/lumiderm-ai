@@ -6,8 +6,8 @@ const footerGroups = [
     title: '产品',
     links: [
       { label: '肌肤分析', href: '#analysis' },
-      { label: '面部分区', href: '#face-mapping' },
-      { label: '个性化护理', href: '#personalization' },
+      { label: '面部分区分析', href: '#face-mapping' },
+      { label: '个性化护理方案', href: '#personalization' },
       { label: '核心技术', href: '#technology' },
     ],
   },
@@ -50,7 +50,7 @@ export default function Footer({ className = '' }) {
 
         <div className="footer-bottom-v2">
           <p>© 2026 LumiDerm AI</p>
-          <p>本项目提供美容护肤方向的模拟分析体验，不构成医疗诊断或治疗建议。</p>
+          <p>LumiDerm AI 提供的是美容护肤方向的模拟肌肤分析与护理建议，不构成医疗诊断或治疗建议。</p>
         </div>
       </Container>
     </footer>

@@ -33,7 +33,7 @@ function HeroContent({ reduceMotion }) {
       transition={{ duration: motionDuration.slow, ease: motionEase }}
       className="hero-copy relative z-20"
     >
-      <p className="hero-eyebrow text-gradient-lumi">AI 美肤智能 · 2026</p>
+      <p className="hero-eyebrow text-gradient-lumi">AI 肌肤智能 · 2026</p>
 
       <h1 className="hero-title display-title">
         <span>AI 驱动的</span>

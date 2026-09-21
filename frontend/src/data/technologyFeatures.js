@@ -58,4 +58,4 @@ export const technologyFeatures = [
   },
 ];
 
-export const technologyBoundary = '当前流程用于展示美容护肤方向的模拟分析与信息组织方式，不代表医学诊断能力。';
+export const technologyBoundary = '当前流程仅用于展示模拟分析与信息组织方式。';

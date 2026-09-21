@@ -1,6 +1,6 @@
 export const heroStats = [
-  { id: 'speed', value: '30秒', label: '快速分析' },
-  { id: 'metrics', value: '8项', label: '肌肤指标' },
+  { id: 'speed', value: '30 秒', label: '快速分析' },
+  { id: 'metrics', value: '8 项', label: '肌肤指标' },
   { id: 'routine', value: 'AI', label: '个性化护理' },
 ];
 

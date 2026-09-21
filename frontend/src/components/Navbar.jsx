@@ -9,8 +9,8 @@ import { cn } from '../lib/utils.js';
 const navItems = [
   { label: '核心技术', href: '#technology' },
   { label: '肌肤分析', href: '#analysis' },
-  { label: '个性化护理', href: '#personalization' },
-  { label: '方案价格', href: '#pricing' },
+  { label: '个性化护理方案', href: '#personalization' },
+  { label: '体验方案', href: '#pricing' },
 ];
 
 function NavLink({ item, active, onClick, mobile = false }) {
@@ -121,7 +121,7 @@ export default function Navbar({ className = '' }) {
         </nav>
 
         <div className="hidden shrink-0 items-center gap-2 xl:flex">
-          <GradientButton href="#analysis" size="sm" icon={ArrowRight}>开始检测</GradientButton>
+          <GradientButton href="#analysis" size="sm" icon={ArrowRight}>开始肌肤检测</GradientButton>
         </div>
 
         <button
@@ -177,7 +177,7 @@ export default function Navbar({ className = '' }) {
 
               <div className="grid gap-2 border-t border-white/[0.07] px-1 pb-1 pt-3">
                 <GradientButton href="#analysis" size="md" icon={ArrowRight} className="w-full" onClick={closeMenu}>
-                  开始检测
+                  开始肌肤检测
                 </GradientButton>
               </div>
             </motion.div>

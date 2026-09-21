@@ -33,8 +33,8 @@ export const faceZones = [
     value: 24,
     unit: '%',
     status: '表现优秀',
-    focus: ['毛孔观感', 'T 区肌理'],
-    description: '鼻部与 T 区的可见毛孔表现较低，当前肌理观感相对细致。',
+    focus: ['毛孔观感', '鼻部肌理'],
+    description: '鼻部区域的可见毛孔表现较低，当前肌理观感相对细致。',
     recommendation: '继续采用温和清洁与平衡护理，避免过度清洁带来的屏障负担。',
     markers: [{ x: 50, y: 51 }],
     labelPosition: { x: 73, y: 49 },
@@ -68,4 +68,4 @@ export const faceZones = [
   },
 ];
 
-export const faceMappingDisclaimer = '本区域分析用于美容护肤方向的模拟展示，不构成医疗诊断或治疗建议。';
+export const faceMappingDisclaimer = '区域结果仅用于美容护肤方向参考。';

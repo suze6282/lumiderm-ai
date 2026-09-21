@@ -1,7 +1,7 @@
 export const routineOverview = {
   status: '护理路径已生成',
   title: '你的个性化护理方案',
-  basis: '根据当前水分状态、肌肤纹理、T 区水油表现与眼周区域观察生成。',
+  basis: '根据当前水分状态、肌肤纹理、额头与鼻部水油表现及眼周区域观察生成。',
   recommendationTitle: 'AI 护理建议',
   recommendation: '优先保持温和清洁与稳定补水，在肤感稳定的基础上，再循序加入针对肌理和肤色观感的功能护理。',
 };
@@ -120,4 +120,4 @@ export const routineIngredients = [
   { id: 'retinol', name: '视黄醇', direction: '关注肌理细腻度，建议根据自身耐受情况循序使用。', caution: true },
 ];
 
-export const routineDisclaimer = 'LumiDerm AI 提供的是美容护肤方向的模拟护理建议，不构成医疗诊断或治疗方案。';
+export const routineDisclaimer = '护理方案仅用于美容护肤方向参考。';

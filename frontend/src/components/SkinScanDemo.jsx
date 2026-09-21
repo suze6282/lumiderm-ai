@@ -61,7 +61,7 @@ function getFriendlyErrorMessage(error) {
     case 'UNSUPPORTED_FILE_TYPE':
       return '暂不支持该图片格式，请上传 JPG、PNG 或 WEBP 图片。';
     case 'FILE_TOO_LARGE':
-      return '图片大小超过 5MB，请选择更小的图片。';
+      return '图片大小超过 5 MB，请选择更小的图片。';
     case 'REQUEST_FAILED':
     case 'ANALYSIS_REQUEST_FAILED':
     case 'DATABASE_SAVE_FAILED':
@@ -79,8 +79,8 @@ function getScoreData(analysis) {
   return {
     label: '综合肌肤评分',
     value: analysis.overallScore,
-    status: '模拟分析完成',
-    condition: '状态已生成',
+    status: '状态良好',
+    condition: '分析完成',
     description: analysis.insight?.zh || skinScore.description,
   };
 }
@@ -206,7 +206,7 @@ function AnalysisPanel({ analysis }) {
   const score = getScoreData(analysis);
   const metrics = analysis?.metrics?.length ? analysis.metrics : scanMetrics;
   const summaryMetrics = metrics.slice(0, 4);
-  const disclaimer = analysis?.zhDisclaimer || 'LumiDerm AI 提供的是美容护肤方向的模拟肌肤分析，不构成医疗诊断或治疗建议。';
+  const disclaimer = '分析结果仅用于美容护肤方向参考。';
 
   return (
     <GlowCard hoverable={false} variant="elevated" className="skin-result-panel">
@@ -241,7 +241,7 @@ function PhotoReadyPanel() {
 
   return (
     <div className="skin-ready-panel">
-      <p className="skin-ready-kicker">照片已准备好</p>
+      <p className="skin-ready-kicker">照片已就绪</p>
       <h3>确认后开始 AI 分析</h3>
       <p>请确认照片为清晰的正面面部图像。分析开始后，页面会展示阶段进度并等待服务生成最终报告。</p>
       <ul>
@@ -471,7 +471,7 @@ export default function SkinScanDemo({ className = '' }) {
 
         <p className="skin-medical-boundary">
           <Info size={16} aria-hidden="true" />
-          LumiDerm AI 提供的是美容护肤方向的模拟肌肤分析，不构成医疗诊断或治疗建议。
+          LumiDerm AI 提供的是美容护肤方向的模拟肌肤分析与护理建议，不构成医疗诊断或治疗建议。
         </p>
       </Container>
     </MotionSection>
