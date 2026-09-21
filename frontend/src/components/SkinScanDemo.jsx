@@ -1,211 +1,98 @@
-import { useEffect, useState } from 'react';
-import { Download, Gauge, Loader2, Sparkles, UploadCloud } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, m as motion, useReducedMotion } from 'framer-motion';
+import { AlertCircle, Check, Gauge, Info, RefreshCw, ShieldCheck, Sparkles } from 'lucide-react';
 import Container from './common/Container.jsx';
 import GlowCard from './common/GlowCard.jsx';
 import GradientButton from './common/GradientButton.jsx';
 import MotionSection from './common/MotionSection.jsx';
 import SectionTitle from './common/SectionTitle.jsx';
-import { analyzeSkinImage, getBackendAssetUrl } from '../services/skinAnalysisApi.js';
+import SkinUploadZone from './skin/SkinUploadZone.jsx';
+import SkinScanFrame from './skin/SkinScanFrame.jsx';
+import SkinAnalysisProgress, { SkinScanFlow } from './skin/SkinAnalysisProgress.jsx';
+import { analyzeSkinImage } from '../services/skinAnalysisApi.js';
 import {
   aiInsight,
-  scanDetectionPoints,
+  ingredientTranslations,
+  metricStatusTranslations,
+  routinePriorityTranslations,
   scanMetrics,
-  scanStatusTags,
+  skinScanFileConfig,
   skinScore,
 } from '../data/skinScanDemo.js';
+import { motionDuration, motionEase } from '../lib/motion.js';
 import { cn } from '../lib/utils.js';
 
-const uploadStatusCopy = {
-  idle: {
-    label: 'Ready for simulated scan',
-    progress: '0%',
-  },
-  selected: {
-    label: 'Photo selected. Ready to analyze.',
-    progress: '24%',
-  },
-  loading: {
-    label: 'Generating simulated skin analysis...',
-    progress: '72%',
-  },
-  success: {
-    label: 'Visual skin report ready',
-    progress: '100%',
-  },
-  error: {
-    label: 'Analysis paused',
-    progress: '0%',
-  },
-};
+const presentationProgress = [
+  { delay: 180, value: 18 },
+  { delay: 420, value: 34 },
+  { delay: 760, value: 52 },
+  { delay: 1180, value: 69 },
+  { delay: 1720, value: 83 },
+  { delay: 2360, value: 92 },
+];
+
+const wait = (milliseconds) => new Promise((resolve) => {
+  window.setTimeout(resolve, milliseconds);
+});
+
+function createValidationError(code) {
+  const error = new Error(code);
+  error.code = code;
+  return error;
+}
+
+function validateImageFile(file) {
+  if (!file) throw createValidationError('IMAGE_REQUIRED');
+
+  const extension = file.name.split('.').pop()?.toLowerCase() || '';
+  if (!skinScanFileConfig.allowedMimeTypes.has(file.type) || !skinScanFileConfig.allowedExtensions.has(extension)) {
+    throw createValidationError('UNSUPPORTED_FILE_TYPE');
+  }
+
+  if (file.size > skinScanFileConfig.maxSizeBytes) {
+    throw createValidationError('FILE_TOO_LARGE');
+  }
+}
 
 function getFriendlyErrorMessage(error) {
   switch (error?.code) {
     case 'IMAGE_REQUIRED':
-      return 'Please choose a JPG, PNG, or WEBP image before starting the simulated analysis.';
+      return '请先选择一张清晰的正面面部照片。';
     case 'UNSUPPORTED_FILE_TYPE':
-      return 'Please upload a JPG, PNG, or WEBP image.';
+      return '暂不支持该图片格式，请上传 JPG、PNG 或 WEBP 图片。';
     case 'FILE_TOO_LARGE':
-      return 'Image size must be less than 5MB.';
+      return '图片大小超过 5 MB，请选择更小的图片。';
     case 'REQUEST_FAILED':
-      return 'Analysis request failed. Please make sure the backend service is running.';
+    case 'ANALYSIS_REQUEST_FAILED':
+    case 'DATABASE_SAVE_FAILED':
+    case 'INTERNAL_SERVER_ERROR':
+    case 'VALIDATION_ERROR':
+      return '暂时无法完成分析，请稍后重试。';
     default:
-      return '图片上传失败，请确认后端服务已启动后重试。';
+      return '分析暂时未完成，请稍后重试或更换照片。';
   }
 }
 
 function getScoreData(analysis) {
-  if (!analysis) {
-    return skinScore;
-  }
+  if (!analysis) return skinScore;
 
   return {
-    label: 'Overall Skin Score',
+    label: '综合肌肤评分',
     value: analysis.overallScore,
-    status: 'Simulated Report',
-    condition: 'Ready',
+    status: '状态良好',
+    condition: '分析完成',
     description: analysis.insight?.zh || skinScore.description,
   };
 }
 
-function ScanStatus({ uploadStatus }) {
-  const copy = uploadStatusCopy[uploadStatus] || uploadStatusCopy.idle;
-
-  return (
-    <div className="flex flex-wrap items-center justify-between gap-4">
-      <div className="flex items-center gap-3 text-sm text-lumi-secondary">
-        <span className="scan-demo-live-dot" aria-hidden="true" />
-        <span>{copy.label}</span>
-      </div>
-      <div className="rounded-full border border-lumi-line bg-white/[0.04] px-3 py-1 text-xs text-lumi-secondary">
-        Scan Progress <span className="font-semibold text-lumi-text">{copy.progress}</span>
-      </div>
-    </div>
-  );
-}
-
-function FacePreview({ imageSrc }) {
-  return (
-    <div className="scan-demo-face-wrap relative mx-auto flex h-[24rem] max-h-[58vw] min-h-[20rem] w-full max-w-[25rem] items-center justify-center">
-      <div className="scan-demo-face-halo" aria-hidden="true" />
-      <div className="scan-demo-face relative h-full w-[74%] overflow-hidden rounded-[48%_52%_46%_54%/38%_40%_60%_62%] border border-lumi-cyan/20">
-        {imageSrc ? (
-          <img
-            src={imageSrc}
-            alt="Uploaded face preview"
-            className="absolute inset-0 z-[1] h-full w-full object-cover opacity-65 saturate-[0.82]"
-          />
-        ) : null}
-        <div className="scan-demo-face-texture" aria-hidden="true" />
-        <div className="scan-demo-line" aria-hidden="true" />
-        <svg className="absolute inset-[13%] z-10 h-auto w-auto text-white/70" viewBox="0 0 240 330" aria-hidden="true">
-          <path d="M82 118 C104 104 136 104 158 118" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" />
-          <path d="M83 146 C101 137 119 137 137 146" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-          <path d="M146 146 C160 138 174 138 188 146" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-          <path d="M124 138 C117 172 116 194 138 197" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-          <path d="M92 236 C112 252 145 252 166 236" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        </svg>
-        <svg className="absolute inset-0 z-20 h-full w-full text-lumi-cyan/22" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M50 20 L37 39 L31 58 L42 70 L51 80 L67 58 L62 39 Z" fill="none" stroke="currentColor" strokeWidth="0.28" />
-          <path d="M37 39 L62 39 M31 58 L67 58 M42 70 L67 58 M50 20 L51 80" fill="none" stroke="currentColor" strokeWidth="0.22" />
-        </svg>
-        {scanDetectionPoints.map((point) => (
-          <span
-            key={point.id}
-            className="scan-demo-point"
-            style={{ left: point.x, top: point.y }}
-            aria-label={point.label}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function UploadDemo({
-  selectedFile,
-  uploadStatus,
-  errorMessage,
-  onFileChange,
-  onAnalyze,
-}) {
-  const isLoading = uploadStatus === 'loading';
-
-  return (
-    <div className="grid gap-3 rounded-2xl border border-lumi-line bg-lumi-black/45 p-4 sm:grid-cols-[1fr_auto] sm:items-center">
-      <div>
-        <div className="flex items-center gap-2 text-sm font-semibold text-lumi-text">
-          <UploadCloud size={17} className="text-lumi-cyan" aria-hidden="true" />
-          Upload Face Photo
-        </div>
-        <p className="mt-2 text-xs leading-5 text-lumi-muted">
-          {selectedFile
-            ? `${selectedFile.name} · ${(selectedFile.size / 1024).toFixed(1)} KB`
-            : 'Use a clear front-facing JPG, PNG, or WEBP image for simulated cosmetic analysis.'}
-        </p>
-        {errorMessage ? (
-          <p className="mt-2 text-xs leading-5 text-[#FF8FB7]">{errorMessage}</p>
-        ) : null}
-      </div>
-      <div className="flex flex-wrap gap-2 sm:justify-end">
-        <input
-          id="skin-scan-image"
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-          className="sr-only"
-          onChange={onFileChange}
-        />
-        <label
-          htmlFor="skin-scan-image"
-          className="inline-flex min-h-9 cursor-pointer items-center justify-center rounded-full border border-lumi-line bg-white/[0.035] px-4 text-xs font-semibold text-lumi-secondary transition duration-300 hover:border-lumi-lineActive hover:bg-white/[0.07]"
-        >
-          Choose Photo
-        </label>
-        <GradientButton
-          type="button"
-          size="sm"
-          icon={isLoading ? Loader2 : UploadCloud}
-          disabled={!selectedFile || isLoading}
-          onClick={onAnalyze}
-        >
-          {isLoading ? 'Analyzing' : 'Analyze'}
-        </GradientButton>
-      </div>
-    </div>
-  );
-}
-
-function ScanPreview({
-  imageSrc,
-  selectedFile,
-  uploadStatus,
-  errorMessage,
-  onFileChange,
-  onAnalyze,
-}) {
-  return (
-    <GlowCard hoverable={false} className="scan-demo-panel min-h-full p-5 sm:p-6">
-      <ScanStatus uploadStatus={uploadStatus} />
-      <div className="mt-6 rounded-[1.35rem] border border-white/10 bg-lumi-black/35 p-4 placeholder-grid">
-        <FacePreview imageSrc={imageSrc} />
-      </div>
-      <div className="mt-5 flex flex-wrap gap-2">
-        {scanStatusTags.map((tag) => (
-          <span key={tag} className="rounded-full border border-lumi-line bg-white/[0.035] px-3 py-1 text-xs text-lumi-secondary">
-            {tag}
-          </span>
-        ))}
-      </div>
-      <div className="mt-5">
-        <UploadDemo
-          selectedFile={selectedFile}
-          uploadStatus={uploadStatus}
-          errorMessage={errorMessage}
-          onFileChange={onFileChange}
-          onAnalyze={onAnalyze}
-        />
-      </div>
-    </GlowCard>
-  );
+function getMetricData(metric) {
+  return {
+    id: metric.id,
+    label: metric.zhLabel || metric.label || '肌肤指标',
+    value: metric.value,
+    status: metricStatusTranslations[metric.status] || metric.status || '已记录',
+    description: metric.zhDescription || metric.description || '该指标已完成模拟分析。',
+  };
 }
 
 function ScoreRing({ score }) {
@@ -215,110 +102,101 @@ function ScoreRing({ score }) {
   const strokeOffset = circumference - (scoreValue / 100) * circumference;
 
   return (
-    <div className="grid gap-5 rounded-2xl border border-lumi-line bg-white/[0.035] p-5 sm:grid-cols-[9rem_1fr] sm:items-center">
-      <div className="relative mx-auto size-36">
-        <svg className="size-full -rotate-90" viewBox="0 0 120 120" aria-hidden="true">
-          <circle cx="60" cy="60" r={radius} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="9" />
+    <div className="skin-result-score">
+      <div className="skin-score-ring" role="img" aria-label={`${score.label} ${scoreValue} 分`}>
+        <svg viewBox="0 0 120 120" aria-hidden="true">
+          <circle cx="60" cy="60" r={radius} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="8" />
           <circle
-            className="scan-demo-score-ring"
+            className="skin-score-ring-value"
             cx="60"
             cy="60"
             r={radius}
             fill="none"
-            stroke="url(#skin-score-gradient)"
+            stroke="url(#skin-score-gradient-v2)"
             strokeDasharray={circumference}
             strokeDashoffset={strokeOffset}
             strokeLinecap="round"
-            strokeWidth="9"
+            strokeWidth="8"
           />
           <defs>
-            <linearGradient id="skin-score-gradient" x1="14" x2="104" y1="16" y2="104">
-              <stop stopColor="#FF4FD8" />
-              <stop offset="0.48" stopColor="#9B5CFF" />
-              <stop offset="1" stopColor="#4CC9F0" />
+            <linearGradient id="skin-score-gradient-v2" x1="20" x2="100" y1="18" y2="102">
+              <stop stopColor="#b59cff" />
+              <stop offset="1" stopColor="#84d4ff" />
             </linearGradient>
           </defs>
         </svg>
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-          <strong className="text-5xl font-semibold tracking-tight text-lumi-text">{scoreValue}</strong>
-          <span className="text-xs text-lumi-muted">/ 100</span>
-        </div>
+        <span><strong>{scoreValue}</strong><small>/ 100</small></span>
       </div>
       <div>
-        <p className="text-sm text-lumi-secondary">{score.label}</p>
-        <h3 className="mt-2 text-2xl font-semibold text-lumi-text">{score.status} · {score.condition}</h3>
-        <p className="mt-4 text-sm leading-6 text-lumi-secondary">{score.description}</p>
+        <p className="skin-result-label">{score.label}</p>
+        <h3>{score.status}</h3>
+        <p className="skin-result-condition">{score.condition}</p>
+        <p className="skin-result-description">{score.description}</p>
       </div>
     </div>
   );
 }
 
 function MetricProgress({ metric }) {
-  const metricValue = Number.isFinite(Number(metric.value)) ? Math.min(100, Math.max(0, Number(metric.value))) : 0;
+  const normalizedMetric = getMetricData(metric);
+  const metricValue = Number.isFinite(Number(normalizedMetric.value))
+    ? Math.min(100, Math.max(0, Number(normalizedMetric.value)))
+    : 0;
 
   return (
-    <div className="rounded-xl border border-white/10 bg-white/[0.025] px-4 py-3">
-      <div className="flex items-start justify-between gap-4">
+    <div className="skin-result-metric">
+      <div className="skin-result-metric-head">
         <div>
-          <p className="text-sm font-medium text-lumi-text">{metric.label}</p>
-          <p className="mt-1 text-xs text-lumi-muted">{metric.zhLabel} · {metric.status}</p>
+          <p>{normalizedMetric.label}</p>
+          <span>{normalizedMetric.status}</span>
         </div>
-        <strong className="text-sm text-lumi-text">{metricValue}%</strong>
+        <strong>{metricValue}%</strong>
       </div>
-      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/[0.06]" aria-hidden="true">
-        <div className="scan-demo-progress h-full rounded-full" style={{ '--metric-value': `${metricValue}%` }} />
+      <div className="skin-result-meter" aria-hidden="true">
+        <span style={{ '--metric-value': `${metricValue}%` }} />
       </div>
-      <p className="mt-3 text-xs leading-5 text-lumi-muted">{metric.description}</p>
+      <p className="skin-result-metric-copy">{normalizedMetric.description}</p>
     </div>
   );
 }
 
 function InsightCard({ insight }) {
-  const insightData = insight
-    ? {
-        title: 'AI Insight',
-        content: insight.en,
-        zhContent: insight.zh,
-      }
-    : aiInsight;
+  const content = insight?.zh || aiInsight.content;
 
   return (
-    <GlowCard hoverable={false} className="p-4">
-      <div className="flex items-center gap-2 text-sm font-semibold text-lumi-text">
-        <Sparkles size={17} className="text-lumi-cyan" aria-hidden="true" />
-        {insightData.title}
+    <div className="skin-result-insight">
+      <div className="skin-result-subheading">
+        <Sparkles size={17} aria-hidden="true" />
+        <h4>AI 肌肤洞察</h4>
       </div>
-      <p className="mt-3 text-sm leading-6 text-lumi-secondary">{insightData.content}</p>
-      <p className="mt-3 text-xs leading-5 text-lumi-muted">{insightData.zhContent}</p>
-    </GlowCard>
+      <p>{content}</p>
+    </div>
   );
 }
 
 function RoutineSuggestion({ routineSuggestion }) {
-  if (!routineSuggestion) {
-    return null;
-  }
+  if (!routineSuggestion) return null;
 
-  const priorities = routineSuggestion.priorities || [];
-  const ingredients = routineSuggestion.ingredients || [];
+  const priorities = (routineSuggestion.priorities || [])
+    .map((item) => routinePriorityTranslations[item])
+    .filter(Boolean);
+  const ingredients = (routineSuggestion.ingredients || [])
+    .map((item) => ingredientTranslations[item])
+    .filter(Boolean);
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-4">
-      <div className="flex items-center gap-2 text-sm font-semibold text-lumi-text">
-        <Sparkles size={17} className="text-lumi-cyan" aria-hidden="true" />
-        Personalized Routine Direction
+    <div className="skin-result-routine">
+      <div className="skin-result-subheading">
+        <ShieldCheck size={17} aria-hidden="true" />
+        <h4>个性化护理方向</h4>
       </div>
-      <div className="mt-3 flex flex-wrap gap-2">
-        {priorities.map((priority) => (
-          <span key={priority} className="rounded-full border border-lumi-line bg-white/[0.035] px-3 py-1 text-xs text-lumi-secondary">
-            {priority}
-          </span>
-        ))}
-      </div>
+      {priorities.length ? (
+        <div className="skin-result-priorities">
+          {priorities.map((priority) => <span key={priority}>{priority}</span>)}
+        </div>
+      ) : null}
       {ingredients.length ? (
-        <p className="mt-3 text-xs leading-5 text-lumi-muted">
-          Suggested ingredients: {ingredients.join(', ')}
-        </p>
+        <p><strong>建议关注的护肤成分：</strong>{ingredients.join('、')}</p>
       ) : null}
     </div>
   );
@@ -327,117 +205,281 @@ function RoutineSuggestion({ routineSuggestion }) {
 function AnalysisPanel({ analysis }) {
   const score = getScoreData(analysis);
   const metrics = analysis?.metrics?.length ? analysis.metrics : scanMetrics;
-  const disclaimer = analysis?.disclaimer || 'Cosmetic analysis demo only. Not for medical diagnosis.';
-  const zhDisclaimer = analysis?.zhDisclaimer || '本演示仅用于美容护肤分析概念展示，不构成医疗诊断或治疗建议。';
+  const summaryMetrics = metrics.slice(0, 4);
+  const disclaimer = '分析结果仅用于美容护肤方向参考。';
 
   return (
-    <GlowCard hoverable={false} className="min-h-full p-5 sm:p-6">
-      <div className="flex items-center gap-3">
-        <Gauge size={20} className="text-lumi-cyan" aria-hidden="true" />
-        <h3 className="text-xl font-semibold">Visual Skin Report</h3>
+    <GlowCard hoverable={false} variant="elevated" className="skin-result-panel">
+      <div className="skin-result-heading">
+        <span><Gauge size={20} aria-hidden="true" /></span>
+        <div>
+          <p>肌肤分析完成</p>
+          <h3>肌肤分析摘要</h3>
+        </div>
       </div>
-      <div className="mt-6">
-        <ScoreRing score={score} />
+
+      <ScoreRing score={score} />
+
+      <div className="skin-result-metrics">
+        {summaryMetrics.map((metric) => <MetricProgress key={metric.id} metric={metric} />)}
       </div>
-      <div className="mt-5 grid gap-3">
-        {metrics.map((metric) => (
-          <MetricProgress key={metric.id} metric={metric} />
-        ))}
-      </div>
-      <div className="mt-5">
-        <InsightCard insight={analysis?.insight} />
-      </div>
-      <div className="mt-5">
-        <RoutineSuggestion routineSuggestion={analysis?.routineSuggestion} />
-      </div>
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-        <GradientButton href="#personalization">Generate Routine</GradientButton>
-        <GradientButton variant="secondary" icon={Download}>Export Demo Report</GradientButton>
-      </div>
-      <p className="mt-6 text-xs leading-5 text-lumi-muted">
-        {disclaimer}
-        <br />
-        {zhDisclaimer}
-      </p>
+
+      <InsightCard insight={analysis?.insight} />
+      <RoutineSuggestion routineSuggestion={analysis?.routineSuggestion} />
+
+      <GradientButton href="#skin-metrics" size="lg" className="mt-6 w-full sm:w-auto">
+        查看完整肌肤智能分析
+      </GradientButton>
+
+      <p className="skin-result-disclaimer"><Info size={15} aria-hidden="true" />{disclaimer}</p>
     </GlowCard>
   );
 }
 
+function PhotoReadyPanel() {
+  const checks = ['照片清晰可见', '图片格式与大小符合要求', '可以开始模拟肌肤分析'];
+
+  return (
+    <div className="skin-ready-panel">
+      <p className="skin-ready-kicker">照片已就绪</p>
+      <h3>确认后开始 AI 分析</h3>
+      <p>请确认照片为清晰的正面面部图像。分析开始后，页面会展示阶段进度并等待服务生成最终报告。</p>
+      <ul>
+        {checks.map((item) => (
+          <li key={item}><Check size={15} aria-hidden="true" />{item}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function ErrorState({ message, onRetry, onReset }) {
+  return (
+    <div className="skin-error-state" role="alert">
+      <span className="skin-error-icon" aria-hidden="true"><AlertCircle size={22} /></span>
+      <p className="skin-error-kicker">分析暂时未完成</p>
+      <h3>请重新尝试</h3>
+      <p>{message || '可能由于网络连接或服务暂时不可用，请稍后重试。'}</p>
+      <div className="skin-error-actions">
+        <GradientButton type="button" icon={RefreshCw} onClick={onRetry}>重新分析</GradientButton>
+        <GradientButton type="button" variant="secondary" onClick={onReset}>更换照片</GradientButton>
+      </div>
+    </div>
+  );
+}
+
 export default function SkinScanDemo({ className = '' }) {
+  const reduceMotion = useReducedMotion();
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState('');
-  const [uploadStatus, setUploadStatus] = useState('idle');
+  const [scanState, setScanState] = useState('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [result, setResult] = useState(null);
+  const [progress, setProgress] = useState(0);
+  const previewUrlRef = useRef('');
+  const progressTimersRef = useRef([]);
+  const requestIdRef = useRef(0);
+  const analyzingRef = useRef(false);
 
-  useEffect(() => {
-    return () => {
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
-      }
-    };
-  }, [previewUrl]);
+  const clearProgressTimers = () => {
+    progressTimersRef.current.forEach((timer) => window.clearTimeout(timer));
+    progressTimersRef.current = [];
+  };
 
-  const handleFileChange = (event) => {
-    const file = event.target.files?.[0];
+  useEffect(() => () => {
+    requestIdRef.current += 1;
+    clearProgressTimers();
+    if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+  }, []);
 
-    if (!file) {
+  const replacePreview = (file) => {
+    if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+    const nextUrl = URL.createObjectURL(file);
+    previewUrlRef.current = nextUrl;
+    setPreviewUrl(nextUrl);
+  };
+
+  const handleSelectFile = (file) => {
+    try {
+      validateImageFile(file);
+    } catch (error) {
+      setErrorMessage(getFriendlyErrorMessage(error));
       return;
     }
 
-    if (previewUrl) {
-      URL.revokeObjectURL(previewUrl);
-    }
-
+    requestIdRef.current += 1;
+    analyzingRef.current = false;
+    clearProgressTimers();
+    replacePreview(file);
     setSelectedFile(file);
-    setPreviewUrl(URL.createObjectURL(file));
     setResult(null);
+    setProgress(0);
     setErrorMessage('');
-    setUploadStatus('selected');
+    setScanState('selected');
+  };
+
+  const startPresentationProgress = () => {
+    clearProgressTimers();
+    setProgress(8);
+    progressTimersRef.current = presentationProgress.map(({ delay, value }) => window.setTimeout(() => {
+      setProgress(value);
+    }, delay));
   };
 
   const handleAnalyze = async () => {
+    if (scanState === 'loading' || analyzingRef.current) return;
+
     if (!selectedFile) {
-      setErrorMessage('Please choose a JPG, PNG, or WEBP image before starting the simulated analysis.');
-      setUploadStatus('error');
+      setErrorMessage(getFriendlyErrorMessage({ code: 'IMAGE_REQUIRED' }));
       return;
     }
 
-    setUploadStatus('loading');
+    const requestId = requestIdRef.current + 1;
+    requestIdRef.current = requestId;
+    analyzingRef.current = true;
+    setScanState('loading');
+    setResult(null);
     setErrorMessage('');
+    startPresentationProgress();
 
     try {
-      const data = await analyzeSkinImage(selectedFile);
+      const [data] = await Promise.all([analyzeSkinImage(selectedFile), wait(550)]);
+      if (requestIdRef.current !== requestId) return;
+      clearProgressTimers();
+      setProgress(100);
       setResult(data);
-      setUploadStatus('success');
+      setScanState('success');
     } catch (error) {
+      if (requestIdRef.current !== requestId) return;
+      clearProgressTimers();
       setErrorMessage(getFriendlyErrorMessage(error));
-      setUploadStatus('error');
+      setScanState('error');
+    } finally {
+      if (requestIdRef.current === requestId) analyzingRef.current = false;
     }
   };
 
-  const imageSrc = result?.image?.imageUrl ? getBackendAssetUrl(result.image.imageUrl) : previewUrl;
+  const handleRestart = () => {
+    requestIdRef.current += 1;
+    analyzingRef.current = false;
+    clearProgressTimers();
+    setResult(null);
+    setProgress(0);
+    setErrorMessage('');
+    setScanState(selectedFile ? 'selected' : 'idle');
+  };
+
+  const handleReset = () => {
+    requestIdRef.current += 1;
+    analyzingRef.current = false;
+    clearProgressTimers();
+    if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+    previewUrlRef.current = '';
+    setPreviewUrl('');
+    setSelectedFile(null);
+    setResult(null);
+    setProgress(0);
+    setErrorMessage('');
+    setScanState('idle');
+  };
+
+  const transition = reduceMotion
+    ? { duration: 0 }
+    : { duration: motionDuration.normal, ease: motionEase };
 
   return (
-    <MotionSection id="analysis" data-module="skin-scan-demo" className={cn('section-spacing', className)}>
+    <MotionSection
+      id="analysis"
+      data-module="skin-scan-demo"
+      className={cn('skin-scan-section section-spacing', className)}
+    >
       <Container>
         <SectionTitle
-          eyebrow="LIVE AI SKIN SCAN"
-          title="AI Skin Scan Demo"
-          subtitle="模拟上传面部照片后，LumiDerm AI 会分析肌肤状态，并生成可视化评分报告与护理建议方向。"
+          eyebrow="AI 肌肤检测"
+          title="让 AI 看见肌肤的细节"
+          subtitle="上传一张清晰的正面照片，LumiDerm AI 将模拟分析多项肌肤指标，并生成个性化护理建议。"
         />
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-2 xl:gap-8">
-          <ScanPreview
-            imageSrc={imageSrc}
-            selectedFile={selectedFile}
-            uploadStatus={uploadStatus}
-            errorMessage={errorMessage}
-            onFileChange={handleFileChange}
-            onAnalyze={handleAnalyze}
-          />
-          <AnalysisPanel analysis={result?.analysis} />
+        <div className="skin-scan-shell">
+          <SkinScanFlow state={scanState} />
+
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={scanState}
+              initial={reduceMotion ? false : { opacity: 0, y: 12, scale: 0.995 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={reduceMotion ? undefined : { opacity: 0, y: -8 }}
+              transition={transition}
+            >
+              {scanState === 'idle' ? (
+                <SkinUploadZone errorMessage={errorMessage} onSelectFile={handleSelectFile} />
+              ) : null}
+
+              {scanState === 'selected' ? (
+                <div className="skin-scan-workspace">
+                  <SkinScanFrame
+                    imageSrc={previewUrl}
+                    selectedFile={selectedFile}
+                    state={scanState}
+                    onSelectFile={handleSelectFile}
+                    onAnalyze={handleAnalyze}
+                    onRestart={handleRestart}
+                  />
+                  <PhotoReadyPanel />
+                </div>
+              ) : null}
+
+              {scanState === 'loading' ? (
+                <div className="skin-scan-workspace">
+                  <SkinScanFrame
+                    imageSrc={previewUrl}
+                    selectedFile={selectedFile}
+                    state={scanState}
+                    disabled
+                    onSelectFile={handleSelectFile}
+                    onAnalyze={handleAnalyze}
+                    onRestart={handleRestart}
+                  />
+                  <SkinAnalysisProgress progress={progress} />
+                </div>
+              ) : null}
+
+              {scanState === 'error' ? (
+                <div className="skin-scan-workspace">
+                  <SkinScanFrame
+                    imageSrc={previewUrl}
+                    selectedFile={selectedFile}
+                    state={scanState}
+                    showActions={false}
+                    onSelectFile={handleSelectFile}
+                    onAnalyze={handleAnalyze}
+                    onRestart={handleRestart}
+                  />
+                  <ErrorState message={errorMessage} onRetry={handleAnalyze} onReset={handleReset} />
+                </div>
+              ) : null}
+
+              {scanState === 'success' ? (
+                <div className="skin-scan-success">
+                  <SkinScanFrame
+                    imageSrc={previewUrl}
+                    selectedFile={selectedFile}
+                    state={scanState}
+                    onSelectFile={handleSelectFile}
+                    onAnalyze={handleAnalyze}
+                    onRestart={handleRestart}
+                  />
+                  <AnalysisPanel analysis={result?.analysis} />
+                </div>
+              ) : null}
+            </motion.div>
+          </AnimatePresence>
         </div>
+
+        <p className="skin-medical-boundary">
+          <Info size={16} aria-hidden="true" />
+          LumiDerm AI 提供的是美容护肤方向的模拟肌肤分析与护理建议，不构成医疗诊断或治疗建议。
+        </p>
       </Container>
     </MotionSection>
   );

@@ -1,0 +1,57 @@
+@keyframes heroHudFloat {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -4px; }
+}
+
+@keyframes heroFaceScan {
+  0%, 100% { transform: translateY(0); opacity: 0.2; }
+  50% { transform: translateY(260px); opacity: 0.72; }
+}
+
+@keyframes heroNodeBreathe {
+  0%, 100% { opacity: 0.62; transform: scale(0.96); }
+  50% { opacity: 0.94; transform: scale(1.04); }
+}
+
+@keyframes skinScanLine {
+  0%, 100% { transform: translateY(0); opacity: 0.2; }
+  50% { transform: translateY(330px); opacity: 0.72; }
+}
+
+@keyframes skinScanPoint {
+  0%, 100% { opacity: 0.62; transform: scale(0.96); }
+  50% { opacity: 0.92; transform: scale(1.04); }
+}
+
+@keyframes skinProgressPulse {
+  0%, 100% { opacity: 0.62; transform: scale(0.92); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes skinScoreDraw { from { stroke-dashoffset: 295; } }
+@keyframes metricProgressFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+@keyframes lumiSpinner { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .hero-hud-card,
+  .hero-face-scan,
+  .hero-detection-point,
+  .skin-scan-line,
+  .skin-scan-point,
+  .skin-progress-stage-icon,
+  .skin-score-ring-value,
+  .skin-result-meter > span,
+  .metric-progress-fill {
+    animation: none !important;
+  }
+}

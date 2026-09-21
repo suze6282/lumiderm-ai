@@ -1,0 +1,553 @@
+.face-mapping-section {
+  position: relative;
+  isolation: isolate;
+}
+
+.face-mapping-section::before {
+  content: "";
+  position: absolute;
+  inset: 12% 0 auto;
+  z-index: -1;
+  height: 42rem;
+  background:
+    radial-gradient(circle at 28% 42%, rgba(155, 140, 255, 0.1), transparent 27rem),
+    radial-gradient(circle at 70% 50%, rgba(109, 184, 255, 0.06), transparent 25rem);
+  pointer-events: none;
+}
+
+.face-mapping-title {
+  max-width: 54rem;
+}
+
+.face-mapping-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(22rem, 0.8fr);
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  align-items: stretch;
+}
+
+.face-map-interaction-column {
+  min-width: 0;
+}
+
+.face-map-visual-v2,
+.face-zone-detail,
+.face-map-empty-state {
+  border: 1px solid var(--lumi-border);
+  border-radius: var(--lumi-radius-xl);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.038), rgba(255, 255, 255, 0.012)),
+    rgba(8, 9, 19, 0.88);
+  box-shadow: var(--lumi-shadow-card);
+}
+
+.face-map-visual-v2 {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 39rem;
+  background:
+    radial-gradient(circle at 50% 34%, rgba(216, 217, 230, 0.07), transparent 18rem),
+    radial-gradient(circle at 48% 56%, rgba(155, 140, 255, 0.11), transparent 23rem),
+    linear-gradient(145deg, rgba(8, 9, 19, 0.96), rgba(10, 12, 25, 0.9));
+}
+
+.face-map-visual-v2::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.28;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(circle at 50% 46%, black, transparent 78%);
+}
+
+.face-map-visual-status {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.25rem;
+  z-index: 8;
+  display: inline-flex;
+  min-height: 2rem;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid rgba(132, 212, 255, 0.18);
+  border-radius: var(--lumi-radius-pill);
+  padding: 0.35rem 0.7rem;
+  color: var(--lumi-accent-secondary-soft);
+  background: rgba(7, 8, 18, 0.78);
+  font-size: 0.7rem;
+  font-weight: 650;
+}
+
+.face-map-portrait {
+  position: absolute;
+  inset: 4.5rem 10% 1.75rem;
+  display: grid;
+  place-items: center;
+  filter: drop-shadow(0 26px 70px rgba(109, 184, 255, 0.08));
+}
+
+.face-map-portrait svg {
+  width: min(86%, 27rem);
+  height: 100%;
+}
+
+.face-map-silhouette {
+  fill: url("#face-depth-gradient");
+  stroke: url("#face-outline-gradient");
+  stroke-width: 1.3;
+}
+
+.face-map-depth {
+  fill: url("#face-depth-gradient");
+  opacity: 0.76;
+}
+
+.face-map-features,
+.face-map-mesh {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.face-map-features {
+  stroke: rgba(216, 217, 230, 0.4);
+  stroke-width: 1.2;
+}
+
+.face-map-mesh {
+  stroke: rgba(132, 212, 255, 0.1);
+  stroke-width: 0.7;
+}
+
+.face-map-scan-line {
+  position: absolute;
+  right: 20%;
+  left: 20%;
+  top: 18%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(132, 212, 255, 0.42), transparent);
+  box-shadow: 0 0 18px rgba(109, 184, 255, 0.16);
+  animation: faceMapScan 7s ease-in-out infinite;
+}
+
+.face-map-selected-connector {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.face-map-selected-connector path {
+  fill: none;
+  stroke: rgba(132, 212, 255, 0.44);
+  stroke-width: 0.18;
+  stroke-linecap: round;
+}
+
+.face-zone-marker-v2 {
+  position: absolute;
+  left: var(--zone-x);
+  top: var(--zone-y);
+  z-index: 7;
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  padding: 0;
+  color: var(--lumi-accent-secondary-soft);
+  background: transparent;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+}
+
+.face-zone-marker-core {
+  width: 0.65rem;
+  height: 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 50%;
+  background: rgba(132, 212, 255, 0.72);
+  box-shadow: 0 0 0 5px rgba(109, 184, 255, 0.08);
+  transition:
+    transform var(--lumi-motion-fast) var(--lumi-motion-ease),
+    border-color var(--lumi-motion-fast) ease,
+    background-color var(--lumi-motion-fast) ease,
+    box-shadow var(--lumi-motion-normal) var(--lumi-motion-ease);
+}
+
+.face-zone-marker-v2:hover .face-zone-marker-core,
+.face-zone-marker-v2:focus-visible .face-zone-marker-core {
+  transform: scale(1.08);
+  background: var(--lumi-accent-secondary-soft);
+  box-shadow: 0 0 0 7px rgba(109, 184, 255, 0.1), 0 0 20px rgba(109, 184, 255, 0.16);
+}
+
+.face-zone-marker-v2[aria-pressed="true"] .face-zone-marker-core {
+  border-color: rgba(255, 255, 255, 0.9);
+  background: var(--lumi-accent-primary-soft);
+  box-shadow: 0 0 0 8px rgba(155, 140, 255, 0.12), 0 0 24px rgba(109, 184, 255, 0.2);
+  animation: faceMarkerSelected 2.8s ease-in-out infinite;
+}
+
+.face-map-selected-label {
+  position: absolute;
+  left: var(--label-x);
+  top: var(--label-y);
+  z-index: 6;
+  min-width: 7.5rem;
+  border: 1px solid rgba(132, 212, 255, 0.16);
+  border-radius: var(--lumi-radius-md);
+  padding: 0.7rem 0.85rem;
+  background: rgba(7, 8, 18, 0.88);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transform: translate(-50%, -50%);
+}
+
+.face-map-selected-label span,
+.face-map-selected-label strong {
+  display: block;
+}
+
+.face-map-selected-label span {
+  color: var(--lumi-text-muted);
+  font-size: 0.65rem;
+}
+
+.face-map-selected-label strong {
+  margin-top: 0.12rem;
+  color: var(--lumi-text-primary);
+  font-size: 0.85rem;
+}
+
+.face-zone-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 0.8rem;
+}
+
+.face-zone-chip {
+  min-height: 2.75rem;
+  border: 1px solid var(--lumi-border);
+  border-radius: var(--lumi-radius-pill);
+  padding: 0.6rem 1rem;
+  color: var(--lumi-text-secondary);
+  background: rgba(255, 255, 255, 0.025);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    color var(--lumi-motion-fast) ease,
+    border-color var(--lumi-motion-fast) ease,
+    background-color var(--lumi-motion-fast) ease,
+    transform var(--lumi-motion-fast) var(--lumi-motion-ease);
+}
+
+.face-zone-chip:hover {
+  color: var(--lumi-text-primary);
+  border-color: var(--lumi-border-hover);
+}
+
+.face-zone-chip:active {
+  transform: scale(0.98);
+}
+
+.face-zone-chip[aria-pressed="true"] {
+  color: var(--lumi-text-primary);
+  border-color: rgba(132, 212, 255, 0.3);
+  background: linear-gradient(110deg, rgba(155, 140, 255, 0.12), rgba(109, 184, 255, 0.08));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.face-zone-detail {
+  align-self: stretch;
+  padding: clamp(1.4rem, 3vw, 2.25rem);
+}
+
+.face-zone-detail-kicker,
+.face-zone-detail-section > span,
+.face-zone-recommendation span,
+.face-zone-value-copy > span {
+  color: var(--lumi-text-muted);
+  font-size: 0.68rem;
+  font-weight: 650;
+}
+
+.face-zone-detail-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.face-zone-detail-heading h3 {
+  color: var(--lumi-text-primary);
+  font-size: clamp(1.8rem, 4vw, 2.7rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+
+.face-zone-detail-heading p {
+  margin-top: 0.35rem;
+  color: var(--lumi-text-secondary);
+  font-size: 0.86rem;
+}
+
+.face-zone-status {
+  flex: 0 0 auto;
+  border: 1px solid rgba(181, 156, 255, 0.2);
+  border-radius: var(--lumi-radius-pill);
+  padding: 0.35rem 0.65rem;
+  color: var(--lumi-accent-primary-soft);
+  background: rgba(155, 140, 255, 0.065);
+  font-size: 0.68rem;
+  font-weight: 650;
+}
+
+.face-zone-value-block {
+  margin-top: 1.75rem;
+  border-top: 1px solid var(--lumi-border);
+  border-bottom: 1px solid var(--lumi-border);
+  padding: 1.3rem 0;
+}
+
+.face-zone-value-copy {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.face-zone-value-copy strong {
+  margin-left: auto;
+  color: var(--lumi-text-primary);
+  font-size: 2rem;
+  letter-spacing: -0.045em;
+}
+
+.face-zone-value-copy strong small {
+  margin-left: 0.15rem;
+  color: var(--lumi-text-muted);
+  font-size: 0.72rem;
+}
+
+.face-zone-value-copy strong.is-missing {
+  font-size: 0.95rem;
+  letter-spacing: 0;
+}
+
+.face-zone-value-copy > small {
+  color: var(--lumi-text-muted);
+  font-size: 0.7rem;
+}
+
+.face-zone-value-bar {
+  height: 2px;
+  margin-top: 0.9rem;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.face-zone-value-bar span {
+  display: block;
+  width: var(--zone-value);
+  height: 100%;
+  background: linear-gradient(90deg, var(--lumi-accent-primary-soft), var(--lumi-accent-secondary-soft));
+  transform-origin: left center;
+}
+
+.face-zone-detail-section {
+  margin-top: 1.45rem;
+}
+
+.face-zone-detail-section > p {
+  margin-top: 0.65rem;
+  color: var(--lumi-text-secondary);
+  font-size: 0.82rem;
+  line-height: 1.8;
+}
+
+.face-zone-focus-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+}
+
+.face-zone-focus-list span {
+  border: 1px solid var(--lumi-border);
+  border-radius: var(--lumi-radius-pill);
+  padding: 0.38rem 0.68rem;
+  color: var(--lumi-text-secondary);
+  background: rgba(255, 255, 255, 0.025);
+  font-size: 0.7rem;
+}
+
+.face-zone-recommendation {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+  border: 1px solid rgba(132, 212, 255, 0.12);
+  border-radius: var(--lumi-radius-lg);
+  padding: 1rem;
+  color: var(--lumi-accent-secondary-soft);
+  background: rgba(109, 184, 255, 0.04);
+}
+
+.face-zone-recommendation svg {
+  flex: 0 0 auto;
+  margin-top: 0.15rem;
+}
+
+.face-zone-recommendation p {
+  margin-top: 0.45rem;
+  color: var(--lumi-text-secondary);
+  font-size: 0.78rem;
+  line-height: 1.75;
+}
+
+.face-zone-cta {
+  width: 100%;
+  margin-top: 1.4rem;
+}
+
+.face-zone-disclaimer {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  margin-top: 1rem;
+  color: var(--lumi-text-muted);
+  font-size: 0.66rem;
+  line-height: 1.6;
+}
+
+.face-zone-disclaimer svg {
+  flex: 0 0 auto;
+  margin-top: 0.1rem;
+}
+
+.face-map-empty-state {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  max-width: 50rem;
+  margin: clamp(2.5rem, 5vw, 4rem) auto 0;
+  padding: clamp(2.5rem, 7vw, 5rem) 1.5rem;
+  text-align: center;
+}
+
+.face-map-empty-state > span {
+  display: grid;
+  width: 3.25rem;
+  height: 3.25rem;
+  place-items: center;
+  border: 1px solid rgba(132, 212, 255, 0.16);
+  border-radius: var(--lumi-radius-md);
+  color: var(--lumi-accent-secondary-soft);
+  background: rgba(109, 184, 255, 0.055);
+}
+
+.face-map-empty-state h3 {
+  margin-top: 1.25rem;
+  color: var(--lumi-text-primary);
+  font-size: clamp(1.45rem, 3vw, 2rem);
+  font-weight: 700;
+}
+
+.face-map-empty-state p {
+  margin: 0.75rem 0 1.5rem;
+  color: var(--lumi-text-secondary);
+  font-size: 0.86rem;
+}
+
+@keyframes faceMapScan {
+  0%, 100% { transform: translateY(0); opacity: 0.16; }
+  50% { transform: translateY(20rem); opacity: 0.48; }
+}
+
+@keyframes faceMarkerSelected {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+@media (max-width: 1023px) {
+  .face-mapping-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .face-map-visual-v2 {
+    min-height: 35rem;
+  }
+}
+
+@media (max-width: 639px) {
+  .face-map-visual-v2 {
+    min-height: 27rem;
+    border-radius: var(--lumi-radius-lg);
+  }
+
+  .face-map-visual-status {
+    top: 1rem;
+    left: 1rem;
+  }
+
+  .face-map-portrait {
+    inset: 4rem 2% 1rem;
+  }
+
+  .face-map-portrait svg {
+    width: min(88%, 20rem);
+  }
+
+  .face-map-selected-label,
+  .face-map-selected-connector {
+    display: none;
+  }
+
+  .face-zone-chips {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .face-zone-chip {
+    width: 100%;
+    padding-inline: 0.65rem;
+  }
+
+  .face-zone-detail,
+  .face-map-empty-state {
+    border-radius: var(--lumi-radius-lg);
+  }
+
+  .face-zone-detail-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .face-map-scan-line {
+    display: none;
+  }
+
+  .face-zone-marker-v2[aria-pressed="true"] .face-zone-marker-core {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .face-map-visual-v2,
+  .face-zone-detail,
+  .face-map-empty-state {
+    background: var(--lumi-bg-tertiary);
+  }
+}
