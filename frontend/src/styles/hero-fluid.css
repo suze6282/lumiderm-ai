@@ -1,0 +1,171 @@
+/* Real Fluid Hero: portrait compositing and interaction-safe visual refinements. */
+
+.hero-section {
+  --hero-fluid-violet: 142 126 224;
+  --hero-fluid-ice: 120 198 244;
+}
+
+.hero-nebula-fallback {
+  background:
+    radial-gradient(ellipse at 77% 35%, rgb(var(--hero-fluid-ice) / 0.12), transparent 24rem),
+    radial-gradient(ellipse at 72% 63%, rgb(var(--hero-fluid-violet) / 0.2), transparent 31rem),
+    radial-gradient(ellipse at 92% 10%, rgb(202 226 255 / 0.07), transparent 22rem),
+    linear-gradient(112deg, #040409 0%, #070812 52%, #090b17 100%);
+}
+
+.hero-nebula-fallback::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  opacity: 0.36;
+  background-image:
+    radial-gradient(circle at 70% 22%, rgb(225 235 255 / 0.7) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 87% 61%, rgb(164 207 255 / 0.58) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 57% 78%, rgb(188 176 255 / 0.5) 0 0.8px, transparent 1.3px);
+  background-size: 173px 181px, 211px 227px, 149px 163px;
+}
+
+.hero-nebula-layer {
+  opacity: 1;
+  mix-blend-mode: screen;
+}
+
+.hero-depth-scrim {
+  background:
+    radial-gradient(ellipse at 75% 49%, transparent 0 17%, rgb(4 5 11 / 0.12) 42%, transparent 68%),
+    linear-gradient(90deg, rgb(4 4 9 / 0.98) 0%, rgb(4 5 10 / 0.88) 31%, rgb(4 5 10 / 0.24) 57%, rgb(4 5 10 / 0.13) 77%, rgb(4 5 10 / 0.4) 100%),
+    linear-gradient(180deg, rgb(4 4 9 / 0.15), transparent 68%, rgb(4 4 9 / 0.86));
+}
+
+.hero-copy::before {
+  position: absolute;
+  z-index: -1;
+  inset: -12% -22% -12% -18%;
+  content: "";
+  pointer-events: none;
+  background: radial-gradient(ellipse at 38% 50%, rgb(3 4 9 / 0.88), rgb(3 4 9 / 0.48) 52%, transparent 76%);
+  filter: blur(18px);
+}
+
+.hero-intelligence-visual {
+  min-height: clamp(31rem, 51vw, 40rem);
+}
+
+.hero-visual-frame {
+  inset: 5% 2% 2% 9%;
+  border-color: rgb(219 229 255 / 0.07);
+  border-radius: 51% 49% 45% 55% / 47% 43% 57% 53%;
+  background: radial-gradient(circle at 58% 41%, rgb(222 219 255 / 0.055), transparent 60%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.04), 0 0 90px rgb(104 92 189 / 0.06);
+}
+
+.hero-portrait-layer {
+  left: 57%;
+  top: 52%;
+  z-index: 14;
+  width: min(82%, 33rem);
+  aspect-ratio: 0.8;
+  filter: drop-shadow(0 38px 96px rgb(44 38 94 / 0.32));
+}
+
+.hero-portrait-aura {
+  inset: 2% -13% -2%;
+  border-radius: 45% 55% 43% 57%;
+  background:
+    radial-gradient(circle at 31% 23%, rgb(230 226 255 / 0.12), transparent 26%),
+    radial-gradient(circle at 72% 41%, rgb(var(--hero-fluid-violet) / 0.21), transparent 47%),
+    radial-gradient(circle at 72% 72%, rgb(var(--hero-fluid-ice) / 0.16), transparent 39%);
+  filter: blur(24px);
+}
+
+.hero-portrait-surface {
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.hero-portrait-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: saturate(0.89) contrast(1.025) brightness(0.91) drop-shadow(0 1px 0 rgb(235 232 255 / 0.18));
+  -webkit-mask-image: linear-gradient(to bottom, #000 0 89%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0 89%, transparent 100%);
+}
+
+.hero-face-vector {
+  z-index: 4;
+  inset: 7% -2% 1% 6%;
+  width: 96%;
+  height: 91%;
+  opacity: 0.34;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.hero-face-scan {
+  z-index: 5;
+  right: 4%;
+  left: 12%;
+  opacity: 0.65;
+}
+
+.hero-detection-point {
+  z-index: 6;
+  width: 0.42rem;
+  height: 0.42rem;
+  margin: -0.21rem 0 0 -0.21rem;
+  border-color: rgb(239 240 255 / 0.7);
+  background: rgb(143 210 248 / 0.82);
+  box-shadow: 0 0 0 4px rgb(132 212 255 / 0.055), 0 0 15px rgb(109 184 255 / 0.3);
+}
+
+.hero-hud-card[data-insight="skin-score"] { top: 17%; left: 2%; }
+.hero-hud-card[data-insight="hydration"] { top: 24%; right: -1%; }
+.hero-hud-card[data-insight="pores"] { bottom: 21%; left: 5%; }
+.hero-hud-card[data-insight="routine-match"] { right: 1%; bottom: 13%; }
+
+@media (max-width: 1279px) {
+  .hero-portrait-layer {
+    left: 55%;
+    width: min(80%, 29rem);
+  }
+}
+
+@media (max-width: 1023px) {
+  .hero-intelligence-visual { min-height: 30rem; }
+  .hero-portrait-layer { left: 51%; width: min(76%, 27rem); }
+  .hero-hud-card[data-insight="hydration"] { top: auto; right: 0; bottom: 7%; }
+  .hero-depth-scrim {
+    background:
+      linear-gradient(180deg, rgb(4 4 9 / 0.74) 0%, rgb(4 5 10 / 0.28) 45%, rgb(4 5 10 / 0.72) 100%),
+      linear-gradient(90deg, rgb(4 4 9 / 0.72), transparent 60%);
+  }
+}
+
+@media (max-width: 767px) {
+  .hero-intelligence-visual { min-height: clamp(22rem, 104vw, 26rem); }
+  .hero-portrait-layer {
+    left: 54%;
+    top: 53%;
+    width: min(83%, 20rem);
+  }
+  .hero-face-vector { opacity: 0.25; }
+  .hero-copy::before { inset: -8%; opacity: 0.8; }
+  .hero-hud-card[data-insight="skin-score"] { top: 20%; left: -1%; }
+  .hero-hud-card[data-insight="hydration"] { top: auto; right: -2%; bottom: 4%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-face-scan,
+  .hero-detection-point,
+  .hero-hud-card {
+    animation: none !important;
+  }
+}

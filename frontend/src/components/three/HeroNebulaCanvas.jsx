@@ -29,7 +29,8 @@ function useMediaQuery(query) {
 }
 
 export default function HeroNebulaCanvas({ reduceMotion = false }) {
-  const mobile = useMediaQuery('(max-width: 1023px)');
+  const mobile = useMediaQuery('(max-width: 767px)');
+  const tablet = useMediaQuery('(min-width: 768px) and (max-width: 1023px)');
   const [visible, setVisible] = useState(true);
   const [documentVisible, setDocumentVisible] = useState(!document.hidden);
   const [canRender] = useState(supportsWebGL);
@@ -55,13 +56,14 @@ export default function HeroNebulaCanvas({ reduceMotion = false }) {
   if (!canRender) return null;
 
   const paused = reduceMotion || !visible || !documentVisible;
+  const tier = mobile ? 'mobile' : tablet ? 'tablet' : 'desktop';
 
   return (
     <Canvas
       aria-hidden="true"
       className="hero-nebula-canvas"
       camera={{ position: [0, 0, 7], fov: mobile ? 54 : 47, near: 0.1, far: 30 }}
-      dpr={mobile ? 1 : [1, 1.5]}
+      dpr={mobile ? 1 : tablet ? [1, 1.25] : [1, 1.5]}
       frameloop={paused ? 'demand' : 'always'}
       gl={{ alpha: true, antialias: false, powerPreference: 'high-performance' }}
       onCreated={({ gl }) => {
@@ -69,7 +71,7 @@ export default function HeroNebulaCanvas({ reduceMotion = false }) {
         gl.outputColorSpace = SRGBColorSpace;
       }}
     >
-      <NebulaScene mobile={mobile} paused={paused} />
+      <NebulaScene tier={tier} paused={paused} />
     </Canvas>
   );
 }
